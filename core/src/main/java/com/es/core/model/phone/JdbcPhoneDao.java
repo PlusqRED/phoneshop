@@ -5,23 +5,63 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 @Component
-public class JdbcPhoneDao implements PhoneDao{
+public class JdbcPhoneDao implements PhoneDao {
+
+    //language=SQL
+    private final static String FIND_BY_ID =
+            "select * from PUBLIC.PHONES " +
+                    "where id = ?";
+
+    //language=SQL
+    private final static String FIND_ALL =
+            "select * from PUBLIC.PHONES offset ? limit ?";
+
+    //language=SQL
+    private final static String FIND_COLORS_BY_PHONE_ID =
+            "select * from PUBLIC.PHONE2COLOR " +
+                    "join PUBLIC.COLORS on PUBLIC.PHONE2COLOR.COLORID = PUBLIC.COLORS.ID " +
+                    "where PUBLIC.PHONE2COLOR.PHONEID = ?";
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    public Optional<Phone> get(final Long key) {
-        throw new UnsupportedOperationException("TODO");
+    public void save(final Phone phone) {
+
     }
 
-    public void save(final Phone phone) {
-        throw new UnsupportedOperationException("TODO");
+    @Override
+    public Optional<Phone> find(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        Phone phone = jdbcTemplate.queryForObject(FIND_BY_ID, new BeanPropertyRowMapper<>(Phone.class), id);
+        phone.setColors(new HashSet<>(findPhoneColors(phone.getId())));
+        return Optional.of(phone);
+    }
+
+    @Override
+    public void update(Phone model) {
+
+    }
+
+    @Override
+    public void delete(Phone model) {
+
     }
 
     public List<Phone> findAll(int offset, int limit) {
-        return jdbcTemplate.query("select * from phones offset " + offset + " limit " + limit, new BeanPropertyRowMapper(Phone.class));
+        List<Phone> phones = jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Phone.class), offset, limit);
+        phones.forEach(phone -> phone.setColors(new HashSet<>(findPhoneColors(phone.getId()))));
+        return phones;
+    }
+
+    @Override
+    public List<Color> findPhoneColors(Long phoneId) {
+        return jdbcTemplate.query(FIND_COLORS_BY_PHONE_ID, new BeanPropertyRowMapper<>(Color.class), phoneId);
     }
 }

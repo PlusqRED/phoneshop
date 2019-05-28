@@ -1,10 +1,9 @@
 package com.es.core.model.phone;
 
-import java.util.List;
-import java.util.Optional;
+import com.es.core.model.CrudDao;
 
-public interface PhoneDao {
-    Optional<Phone> get(Long key);
-    void save(Phone phone);
-    List<Phone> findAll(int offset, int limit);
+import java.util.List;
+
+public interface PhoneDao extends CrudDao<Phone> {
+    List<Color> findPhoneColors(Long phoneId);
 }
