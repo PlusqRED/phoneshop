@@ -62,6 +62,9 @@ public class JdbcPhoneDao implements PhoneDao {
 
     @Override
     public List<Color> findPhoneColors(Long phoneId) {
+        if (phoneId == null) {
+            throw new IllegalArgumentException("phoneId cannot be null");
+        }
         return jdbcTemplate.query(FIND_COLORS_BY_PHONE_ID, new BeanPropertyRowMapper<>(Color.class), phoneId);
     }
 }
