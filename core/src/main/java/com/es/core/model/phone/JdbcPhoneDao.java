@@ -60,8 +60,7 @@ public class JdbcPhoneDao implements PhoneDao {
         return phones;
     }
 
-    @Override
-    public List<Color> findPhoneColors(Long phoneId) {
+    private List<Color> findPhoneColors(Long phoneId) {
         if (phoneId == null) {
             throw new IllegalArgumentException("phoneId cannot be null");
         }

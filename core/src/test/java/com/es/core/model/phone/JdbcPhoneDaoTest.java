@@ -1,8 +1,5 @@
-package com.es.core.mode.phone;
+package com.es.core.model.phone;
 
-import com.es.core.model.phone.Color;
-import com.es.core.model.phone.Phone;
-import com.es.core.model.phone.PhoneDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,15 +9,14 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:context/test-context.xml")
 public class JdbcPhoneDaoTest {
 
     @Resource
-    private PhoneDao phoneDao;
+    private JdbcPhoneDao phoneDao;
 
     @Test(expected = IllegalArgumentException.class)
     public void findPhoneByIdNullCheck() {
@@ -35,15 +31,9 @@ public class JdbcPhoneDaoTest {
         assertEquals(phone.get().getId(), id);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void findPhoneColorsNullCheck() {
-        phoneDao.findPhoneColors(null);
-    }
-
     @Test
-    public void testFindPhoneColors() {
-        Long id = 1000L;
-        List<Color> phoneColors = phoneDao.findPhoneColors(id);
-        assertEquals(phoneColors.size(), 2);
+    public void testFindAll() {
+        List<Phone> all = phoneDao.findAll(10, 10);
+        assertFalse(all.isEmpty());
     }
 }
