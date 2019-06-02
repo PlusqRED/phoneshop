@@ -1,4 +1,4 @@
-package com.es.core.model;
+package com.es.core.dao;
 
 import java.util.List;
 import java.util.Optional;

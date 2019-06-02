@@ -27,7 +27,7 @@ public class Phone {
     private LocalDate announced;
     private String deviceType;
     private String os;
-    private Set<Color> colors = Collections.EMPTY_SET;
+    private Set<Color> colors = Collections.emptySet();
     private String displayResolution;
     private Integer pixelDensity;
     private String displayTechnology;
