@@ -21,10 +21,22 @@ public class JdbcPhoneDao implements PhoneDao {
 
     //language=SQL
     private final static String FIND_ALL =
-            "select PHONES.*, COLORS.ID as COLOR_ID, COLORS.CODE as COLOR_CODE from PUBLIC.PHONES " +
-                    "join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
-                    "join COLORS on PHONE2COLOR.COLORID = COLORS.ID " +
-                    "offset ? limit ?";
+            "select PHONES.*, " +
+                    "COLORS.ID as COLOR_ID, " +
+                    "COLORS.CODE as COLOR_CODE " +
+                    "from (select PUBLIC.PHONES.*, " +
+                    "STOCK from PUBLIC.PHONES " +
+                    "join STOCKS on STOCKS.PHONEID = ID " +
+                    "where STOCK > 0 AND PRICE IS NOT NULL " +
+                    "offset ? limit ?) PHONES " +
+                    "left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
+                    "left join COLORS on PHONE2COLOR.COLORID = COLORS.ID;";
+
+    //language=SQL
+    private final static String GET_STOCK_BY_ID = "select STOCK " +
+            "from STOCKS " +
+            "join PHONES on STOCKS.PHONEID = PHONES.ID " +
+            "where ID = ?";
 
     @Resource
     private JdbcTemplate jdbcTemplate;
@@ -74,5 +86,10 @@ public class JdbcPhoneDao implements PhoneDao {
             }
             return new ArrayList<>(phones.values());
         }, offset, limit);
+    }
+
+    @Override
+    public Integer getPhoneStockById(Long id) {
+        return jdbcTemplate.queryForObject(GET_STOCK_BY_ID, (resultSet, i) -> resultSet.getInt("STOCK"), id);
     }
 }
