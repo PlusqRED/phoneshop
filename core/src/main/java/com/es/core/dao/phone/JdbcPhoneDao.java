@@ -57,6 +57,9 @@ public class JdbcPhoneDao implements PhoneDao {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null");
         }
+        if (id < 0) {
+            throw new IllegalArgumentException("Id cannot be negative!");
+        }
         Phone phone = jdbcTemplate.queryForObject(FIND_BY_ID, new BeanPropertyRowMapper<>(Phone.class), id);
         return Optional.of(phone);
     }

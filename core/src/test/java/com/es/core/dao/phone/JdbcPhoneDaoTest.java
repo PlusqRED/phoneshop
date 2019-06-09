@@ -1,6 +1,6 @@
-package com.es.core.model.phone;
+package com.es.core.dao.phone;
 
-import com.es.core.dao.phone.JdbcPhoneDao;
+import com.es.core.model.phone.Phone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class JdbcPhoneDaoTest {
 
     @Resource
-    private JdbcPhoneDao phoneDao;
+    private PhoneDao phoneDao;
 
     @Test(expected = IllegalArgumentException.class)
     public void findPhoneByIdNullCheck() {
@@ -36,5 +36,23 @@ public class JdbcPhoneDaoTest {
     public void testFindAll() {
         List<Phone> all = phoneDao.findAll(10, 10);
         assertFalse(all.isEmpty());
+    }
+
+    @Test
+    public void testGetProductAmountSearchBased() {
+        Long productAmount = phoneDao.getProductAmountSearchBased("sum lg");
+        assertTrue(productAmount > 0);
+    }
+
+    @Test
+    public void testFindAllBySearchQuery() {
+        List<Phone> phones = phoneDao.findAllBySearchQuery("sum lg", 0, 10);
+        assertTrue(phones.stream().allMatch(phone ->
+                phone.getModel()
+                        .toLowerCase()
+                        .contains("sum")
+                        || phone.getModel()
+                        .toLowerCase()
+                        .contains("lg")));
     }
 }

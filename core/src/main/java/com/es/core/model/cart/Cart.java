@@ -40,7 +40,9 @@ public class Cart {
     }
 
     public void addCartItem(CartItem cartItem) {
-        Optional<CartItem> optionalCartItem = items.stream().filter(item -> item.getPhone().getId().equals(cartItem.getPhone().getId())).findAny();
+        Optional<CartItem> optionalCartItem = items.stream()
+                .filter(item -> item.getPhone().getId().equals(cartItem.getPhone().getId()))
+                .findAny();
         if (optionalCartItem.isPresent()) {
             CartItem item = optionalCartItem.get();
             item.setQuantity(item.getQuantity() + cartItem.getQuantity());
