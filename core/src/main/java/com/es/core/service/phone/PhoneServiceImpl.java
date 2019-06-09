@@ -10,7 +10,10 @@ import java.util.List;
 public class PhoneServiceImpl implements PhoneService {
 
     @Override
-    public void sort(List<Phone> phones, SortBy sortBy, boolean asc) {
-        phones.sort(!asc ? SortBy.getComparator(sortBy).reversed() : SortBy.getComparator(sortBy));
+    public void sort(List<Phone> phones, SortBy sortBy) {
+        phones.sort(sortBy.isAsc()
+                ? SortBy.getComparator(sortBy)
+                : SortBy.getComparator(sortBy).reversed()
+        );
     }
 }

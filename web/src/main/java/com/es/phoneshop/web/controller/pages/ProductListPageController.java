@@ -31,10 +31,11 @@ public class ProductListPageController {
     public String showProductList(HttpServletRequest request, String search, String sort, String column) {
         paginationService.recognizeAndPerformAction(request, search);
         if (sort != null && column != null) {
+            SortBy sortBy = SortBy.valueOf(column.toUpperCase().replace(" ", "_"));
+            sortBy.setSortOrder(sort.equals("asc"));
             phoneService.sort(
                     paginationDetails.getPagePhones(),
-                    SortBy.valueOf(column.toUpperCase().replace(" ", "_")),
-                    sort.equals("asc")
+                    SortBy.valueOf(column.toUpperCase().replace(" ", "_"))
             );
         }
         minicartService.loadMinicart(request);

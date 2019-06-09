@@ -27,7 +27,9 @@ public class PhoneServiceImplTest {
         List<Phone> phonesToSort = new ArrayList<>();
         phonesToSort.add(Phone.builder().price(BigDecimal.ONE).build());
         phonesToSort.add(Phone.builder().price(BigDecimal.TEN).build());
-        phoneService.sort(phonesToSort, SortBy.PRICE, false);
+        SortBy sortBy = SortBy.PRICE;
+        sortBy.setSortOrder(false);
+        phoneService.sort(phonesToSort, sortBy);
         assertEquals(phonesToSort.get(0).getPrice(), BigDecimal.TEN);
     }
 }
