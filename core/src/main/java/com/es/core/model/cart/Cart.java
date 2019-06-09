@@ -49,8 +49,7 @@ public class Cart {
         } else {
             items.add(cartItem);
         }
-        recalculateOverallPrice();
-        needRecalculate = false;
+        needRecalculate = true;
     }
 
     public List<CartItem> getItems() {
