@@ -13,10 +13,6 @@ public class CartPageController {
     @Resource
     private CartService cartService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public void getCart() {
-        cartService.getCart();
-    }
 
     @RequestMapping(method = RequestMethod.PUT)
     public void updateCart() {

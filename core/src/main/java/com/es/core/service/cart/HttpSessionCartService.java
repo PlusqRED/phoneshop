@@ -18,11 +18,6 @@ public class HttpSessionCartService implements CartService {
     private PhoneDao phoneDao;
 
     @Override
-    public Cart getCart() {
-        return cart;
-    }
-
-    @Override
     public void addPhone(Long phoneId, Long quantity) {
         if (quantity > 0) {
             phoneDao.find(phoneId)

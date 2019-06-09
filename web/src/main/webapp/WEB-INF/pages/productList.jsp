@@ -1,19 +1,22 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 
+
 <tags:master pageTitle="Product List">
+
     <c:url value="/resources/js/addToCartAjax.js" var="addToCartAjaxUrl"/>
     <script src="${addToCartAjaxUrl}"></script>
-    <div class="container">
-        <jsp:include page="minicart.jsp"/>
+
+    <div class="container-fluid">
+        <jsp:include page="../fragments/minicart.jsp"/>
         <p>
             Found
                 <c:out value="${phones.size()}"/> phones.
         <div align="right" class="search-container">
-            <form action="${pageContext.servletContext.contextPath}/productList">
-                <input type="text" placeholder="Search.." name="search">
+            <form action="${pageContext.servletContext.contextPath}/productList?page=1&max=10">
+                <input type="text" placeholder="Search.." name="search" id="search" value="${param.search}">
                 <button type="submit">Search</button>
             </form>
         </div>
@@ -23,10 +26,19 @@
                     <thead>
                     <tr>
                         <td>Image</td>
-                        <td>Brand</td>
-                        <td>Model</td>
-                        <td>Price</td>
+                        <td>
+                            <tags:sort column="Brand"/>
+                        </td>
+                        <td>
+                            <tags:sort column="Model"/>
+                        </td>
+                        <td>
+                            <tags:sort column="Price"/>
+                        </td>
                         <td>Colors</td>
+                        <td>
+                            <tags:sort column="Display size"/>
+                        </td>
                         <td>Quantity</td>
                         <td>Action</td>
                     </tr>
@@ -40,11 +52,15 @@
                             <td>${phone.model}</td>
                             <td>$${phone.price}</td>
                             <td>
+                                <c:if test="${empty phone.colors}">
+                                    No colors
+                                </c:if>
                                 <c:forEach var="color" items="${phone.colors}">
                                     ${color.code}
                                     <hr>
                                 </c:forEach>
                             </td>
+                            <td>${phone.displaySizeInches}"</td>
                             <td>
                                 <input class="text-input" id="${phone.id}" name="quantity" value="1"
                                        type="text"
@@ -54,7 +70,7 @@
                             </td>
                             <td>
                                 <button class="addToCartBtn" name="addToCartBtn" onclick="addToClick(${phone.id})">Add
-                                    to
+                                    to cart
                                 </button>
                             </td>
                         </tr>
@@ -67,5 +83,6 @@
                 </h4>
             </c:otherwise>
         </c:choose>
+        <jsp:include page="../fragments/pagination.jsp"/>
     </div>
 </tags:master>

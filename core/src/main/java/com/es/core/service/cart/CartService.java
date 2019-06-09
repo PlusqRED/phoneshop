@@ -1,12 +1,8 @@
 package com.es.core.service.cart;
 
-import com.es.core.model.cart.Cart;
-
 import java.util.Map;
 
 public interface CartService {
-
-    Cart getCart();
 
     void addPhone(Long phoneId, Long quantity);
 

@@ -2,16 +2,12 @@ package com.es.phoneshop.web.controller.pages.ajax;
 
 import com.es.core.model.cart.Cart;
 import com.es.core.service.cart.CartService;
-import com.es.core.service.phone.QuantityValidator;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 
 @Controller
 @RequestMapping(value = "/ajaxCart")
@@ -22,24 +18,23 @@ public class AjaxCartController {
 
     @Resource
     private CartService cartService;
+
     @Resource
     private QuantityValidator quantityValidator;
 
-    @PostMapping
-    public @ResponseBody
-    AjaxResponseForm addPhone(Long productId, Long quantity) {
-        boolean valid = quantityValidator.validate(productId, quantity);
-        if (valid) {
-            cartService.addPhone(productId, quantity);
-        }
-        return new AjaxResponseForm(cart.getProductQuantity(), cart.getOverallPrice(), valid);
+    @InitBinder
+    private void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(quantityValidator);
     }
 
-    @AllArgsConstructor
-    @Data
-    private class AjaxResponseForm {
-        private Integer cartProductQuantity;
-        private BigDecimal overallPrice;
-        private boolean valid;
+    @PostMapping
+    public @ResponseBody
+    AjaxResponseForm addPhone(@RequestBody AjaxRequestForm ajaxRequestForm, BindingResult bindingResult) {
+        quantityValidator.validate(ajaxRequestForm, bindingResult);
+        if (!bindingResult.hasErrors()) {
+            cartService.addPhone(ajaxRequestForm.getProductId(), Long.valueOf(ajaxRequestForm.getQuantity()));
+            return new AjaxResponseForm(cart.getProductQuantity(), cart.getOverallPrice(), null);
+        }
+        return new AjaxResponseForm(cart.getProductQuantity(), cart.getOverallPrice(), bindingResult.getAllErrors().get(0).getDefaultMessage());
     }
 }

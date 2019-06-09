@@ -1,19 +1,25 @@
 function addToClick(productId) {
     $.post({
         url: "ajaxCart",
-        data: {productId: productId, quantity: $('#' + productId).val()},
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({productId: productId, quantity: $('#' + productId).val()}),
         dataType: "json",
         success: function (result) {
-            if (result['valid']) {
+            if (result['errorMessage'] === null) {
                 updateMinicart(result);
                 $('#error' + productId).css("display", "none");
             } else {
-                $('#error' + productId).show();
+                let errorMessage = $('#error' + productId);
+                errorMessage.text(result['errorMessage']);
+                errorMessage.show();
             }
         }
     });
 
     function updateMinicart(result) {
-        $('#minicart').html('<strong>My cart: </strong>' + result['cartProductQuantity'] + '<strong> items: </strong>' + result['overallPrice'] + '$');
+        $('#minicart').html('<strong>My cart: </strong>' + result['cartQuantity'] + '<strong> items: </strong>' + result['overallPrice'] + '$');
     }
 }
