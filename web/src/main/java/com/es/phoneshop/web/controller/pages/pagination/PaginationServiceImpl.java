@@ -57,7 +57,10 @@ public class PaginationServiceImpl implements PaginationService {
         long phoneAmount = paginationDetails.getSearch() == null
                 ? phoneDao.getProductAmount()
                 : phoneDao.getProductAmountSearchBased(paginationDetails.getSearch());
-        paginationDetails.setLastPage((int) ((phoneAmount / paginationDetails.getMaxProductsOnPage()) + 1));
+        int lastPage = (int) (phoneAmount % paginationDetails.getMaxProductsOnPage() == 0
+                        ? phoneAmount / paginationDetails.getMaxProductsOnPage()
+                        : (phoneAmount / paginationDetails.getMaxProductsOnPage()) + 1);
+        paginationDetails.setLastPage(lastPage);
         validateBounds();
         List<Integer> pageIndices = new ArrayList<>();
         for (int i = paginationDetails.getLeftPageBound(); i <= paginationDetails.getLastPage(); ++i) {

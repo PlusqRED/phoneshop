@@ -91,9 +91,9 @@ public class JdbcPhoneDao implements PhoneDao {
 
     @Override
     public Long getProductAmountSearchBased(String search) {
-        return jdbcTemplate.queryForObject("select count(PHONES.ID) as AMOUNT from (" +
+        return jdbcTemplate.queryForObject("select count(distinct PHONES.ID) as AMOUNT from (" +
                         "select PUBLIC.PHONES.*, STOCK from PUBLIC.PHONES join STOCKS on STOCKS.PHONEID = ID " +
-                        "where STOCK > 0 AND PRICE IS NOT NULL" +
+                        "where STOCK > 0 and PRICE is not null" +
                         Arrays.stream(getWords(search))
                                 .collect(Collectors.joining("%' OR LOWER(PHONES.MODEL) like '%", " and (LOWER(PHONES.MODEL) like '%", "%' ")) +
                         ")) PHONES left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
