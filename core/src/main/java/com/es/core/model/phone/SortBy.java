@@ -1,29 +1,27 @@
 package com.es.core.model.phone;
 
 import java.util.Comparator;
+import java.util.List;
 
 public enum SortBy {
-    BRAND,
-    MODEL,
-    PRICE,
-    DISPLAY_SIZE,
-    NONE;
+    BRAND(Comparator.comparing(Phone::getBrand)),
+    MODEL(Comparator.comparing(Phone::getModel)),
+    PRICE(Comparator.comparing(Phone::getPrice)),
+    DISPLAY_SIZE(Comparator.comparing(Phone::getDisplaySizeInches));
 
+    private final Comparator<Phone> comparator;
     private boolean asc;
 
-    public static Comparator<Phone> getComparator(SortBy sortBy) {
-        switch (sortBy) {
-            case BRAND:
-                return Comparator.comparing(Phone::getBrand);
-            case MODEL:
-                return Comparator.comparing(Phone::getModel);
-            case PRICE:
-                return Comparator.comparing(Phone::getPrice);
-            case DISPLAY_SIZE:
-                return Comparator.comparing(Phone::getDisplaySizeInches);
-            default:
-                return Comparator.comparing(Phone::getId);
-        }
+    SortBy(Comparator<Phone> comparator) {
+        this.comparator = comparator;
+    }
+
+    public void sort(List<Phone> phones) {
+        phones.sort(asc ? comparator : comparator.reversed());
+    }
+
+    public Comparator<Phone> getComparator() {
+        return comparator;
     }
 
     public void setSortOrder(boolean asc) {

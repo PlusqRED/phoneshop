@@ -91,27 +91,37 @@ public class JdbcPhoneDao implements PhoneDao {
 
     @Override
     public Long getProductAmountSearchBased(String search) {
-        return jdbcTemplate.queryForObject("select count(distinct PHONES.ID) as AMOUNT from (" +
-                        "select PUBLIC.PHONES.*, STOCK from PUBLIC.PHONES join STOCKS on STOCKS.PHONEID = ID " +
-                        "where STOCK > 0 and PRICE is not null" +
-                        Arrays.stream(getWords(search))
-                                .collect(Collectors.joining("%' OR LOWER(PHONES.MODEL) like '%", " and (LOWER(PHONES.MODEL) like '%", "%' ")) +
-                        ")) PHONES left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
-                        "left join COLORS on PHONE2COLOR.COLORID = COLORS.ID",
+        final String firstPartQuery = "select count(distinct PHONES.ID) as AMOUNT from (" +
+                "select PUBLIC.PHONES.*, STOCK from PUBLIC.PHONES join STOCKS on STOCKS.PHONEID = ID " +
+                "where STOCK > 0 and PRICE is not null";
+        final String lastPartQuery = ")) PHONES left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
+                "left join COLORS on PHONE2COLOR.COLORID = COLORS.ID";
+        return jdbcTemplate.queryForObject(firstPartQuery
+                        .concat(Arrays.stream(getWords(search))
+                                .collect(Collectors.joining(
+                                        "%' OR LOWER(PHONES.MODEL) like '%",
+                                        " and (LOWER(PHONES.MODEL) like '%",
+                                        "%' ")))
+                        .concat(lastPartQuery),
                 (resultSet, i) -> resultSet.getLong("AMOUNT"));
     }
 
     @Override
     public List<Phone> findAllBySearchQuery(String searchQuery, int offset, int limit) {
-        return jdbcTemplate.query("select PHONES.*, COLORS.ID as COLOR_ID, " +
-                        "COLORS.CODE as COLOR_CODE from (" +
-                        "select PUBLIC.PHONES.*, STOCK from PUBLIC.PHONES join STOCKS on STOCKS.PHONEID = ID " +
-                        "where STOCK > 0 AND PRICE IS NOT NULL" +
-                        Arrays.stream(getWords(searchQuery))
-                                .collect(Collectors.joining("%' OR LOWER(PHONES.MODEL) like '%", " and (LOWER(PHONES.MODEL) like '%", "%' ")) +
-                        ") offset ? limit ?)" +
-                        "PHONES left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
-                        "left join COLORS on PHONE2COLOR.COLORID = COLORS.ID",
+        final String firstPartQuery = "select PHONES.*, COLORS.ID as COLOR_ID, " +
+                "COLORS.CODE as COLOR_CODE from (" +
+                "select PUBLIC.PHONES.*, STOCK from PUBLIC.PHONES join STOCKS on STOCKS.PHONEID = ID " +
+                "where STOCK > 0 and PRICE is not null";
+        final String lastPartQuery = ") offset ? limit ?)" +
+                "PHONES left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
+                "left join COLORS on PHONE2COLOR.COLORID = COLORS.ID";
+        return jdbcTemplate.query(firstPartQuery
+                        .concat(Arrays.stream(getWords(searchQuery))
+                                .collect(Collectors.joining(
+                                        "%' OR LOWER(PHONES.MODEL) like '%",
+                                        " and (LOWER(PHONES.MODEL) like '%",
+                                        "%' ")))
+                        .concat(lastPartQuery),
                 new PhoneResultSetExtractor(), offset, limit);
     }
 

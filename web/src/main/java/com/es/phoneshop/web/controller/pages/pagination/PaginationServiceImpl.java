@@ -13,7 +13,7 @@ import java.util.List;
 public class PaginationServiceImpl implements PaginationService {
 
     @Resource
-    private PaginationDetails paginationDetails;
+    private PaginationDetails pDet;
 
     @Resource
     private PhoneDao phoneDao;
@@ -27,9 +27,9 @@ public class PaginationServiceImpl implements PaginationService {
                 && (search == null || search.isEmpty())
                 && request.getParameter("sort") == null
         ) {
-            paginationDetails.setSearch(null);
+            pDet.setSearch(null);
         } else if (search != null) {
-            paginationDetails.setSearch(search);
+            pDet.setSearch(search);
         }
         if (page != null) {
             goPage(Integer.valueOf(page));
@@ -39,66 +39,78 @@ public class PaginationServiceImpl implements PaginationService {
             initialPage();
         }
         updatePageIndices();
-        request.setAttribute("phones", paginationDetails.getPagePhones());
-        request.setAttribute("pages", paginationDetails.getPageIndices());
-        request.setAttribute("currentPageIndex", paginationDetails.getCurrentPageIndex());
+        request.setAttribute("phones", pDet.getPagePhones());
+        request.setAttribute("pages", pDet.getPageIndices());
+        request.setAttribute("currentPageIndex", pDet.getCurrentPageIndex());
+        request.setAttribute("totalNumberOfPhones", pDet.getTotalNumberOfPhonesFound());
     }
 
     private void initialPage() {
-        paginationDetails.setCurrentPageIndex(1);
-        paginationDetails.setLeftPageBound(1);
-        List<Phone> phones = paginationDetails.getSearch() != null
-                ? phoneDao.findAllBySearchQuery(paginationDetails.getSearch(), 0, paginationDetails.getMaxProductsOnPage())
-                : phoneDao.findAll(0, paginationDetails.getMaxProductsOnPage());
-        paginationDetails.setPagePhones(phones);
+        pDet.setCurrentPageIndex(1);
+        pDet.setLeftPageBound(1);
+        List<Phone> phones = pDet.getSearch() != null
+                ? phoneDao.findAllBySearchQuery(pDet.getSearch(), 0, pDet.getMaxProductsOnPage())
+                : phoneDao.findAll(0, pDet.getMaxProductsOnPage());
+        pDet.setPagePhones(phones);
     }
 
     private void updatePageIndices() {
-        long phoneAmount = paginationDetails.getSearch() == null
+        long phoneAmount = pDet.getSearch() == null
                 ? phoneDao.getProductAmount()
-                : phoneDao.getProductAmountSearchBased(paginationDetails.getSearch());
-        int lastPage = (int) (phoneAmount % paginationDetails.getMaxProductsOnPage() == 0
-                        ? phoneAmount / paginationDetails.getMaxProductsOnPage()
-                        : (phoneAmount / paginationDetails.getMaxProductsOnPage()) + 1);
-        paginationDetails.setLastPage(lastPage);
+                : phoneDao.getProductAmountSearchBased(pDet.getSearch());
+        pDet.setTotalNumberOfPhonesFound(phoneAmount);
+        int lastPage = (int) (phoneAmount % pDet.getMaxProductsOnPage() == 0
+                ? phoneAmount / pDet.getMaxProductsOnPage()
+                : (phoneAmount / pDet.getMaxProductsOnPage()) + 1);
+        pDet.setLastPage(lastPage);
         validateBounds();
         List<Integer> pageIndices = new ArrayList<>();
-        for (int i = paginationDetails.getLeftPageBound(); i <= paginationDetails.getLastPage(); ++i) {
-            if (pageIndices.size() < paginationDetails.getMaxVisiblePages()) {
+        for (int i = pDet.getLeftPageBound(); i <= pDet.getLastPage(); ++i) {
+            if (pageIndices.size() < pDet.getMaxVisiblePages()) {
                 pageIndices.add(i);
             }
         }
-        paginationDetails.setPageIndices(pageIndices);
+        pDet.setPageIndices(pageIndices);
     }
 
     private void validateBounds() {
-        if (paginationDetails.getCurrentPageIndex() != 1 && paginationDetails.getCurrentPageIndex().equals(paginationDetails.getLeftPageBound())) {
-            paginationDetails.setLeftPageBound(paginationDetails.getLeftPageBound() - paginationDetails.getMaxVisiblePages() + 1);
-        } else if (!paginationDetails.getCurrentPageIndex().equals(paginationDetails.getLastPage()) && paginationDetails.getCurrentPageIndex().equals(paginationDetails.getLeftPageBound() + paginationDetails.getMaxVisiblePages() - 1)) {
-            paginationDetails.setLeftPageBound(paginationDetails.getLeftPageBound() + paginationDetails.getMaxVisiblePages() - 1);
+        if (checkForExtensionLeft()) {
+            pDet.setLeftPageBound(pDet.getLeftPageBound() - pDet.getMaxVisiblePages() + 1);
+        } else if (checkForExtensionRight()) {
+            pDet.setLeftPageBound(pDet.getLeftPageBound() + pDet.getMaxVisiblePages() - 1);
         }
+    }
+
+    private boolean checkForExtensionRight() {
+        return !pDet.getCurrentPageIndex().equals(pDet.getLastPage())
+                && pDet.getCurrentPageIndex().equals(pDet.getLeftPageBound() + pDet.getMaxVisiblePages() - 1);
+    }
+
+    private boolean checkForExtensionLeft() {
+        return pDet.getCurrentPageIndex() != 1 && pDet.getCurrentPageIndex().equals(pDet.getLeftPageBound());
     }
 
     private void act(PaginationAction action) {
         switch (action) {
             case BACK:
-                if (paginationDetails.getCurrentPageIndex() != 1) {
-                    goPage(paginationDetails.getCurrentPageIndex() - 1);
+                if (pDet.getCurrentPageIndex() != 1) {
+                    goPage(pDet.getCurrentPageIndex() - 1);
                 }
                 break;
             case FORWARD:
-                if (!paginationDetails.getCurrentPageIndex().equals(paginationDetails.getLastPage())) {
-                    goPage(paginationDetails.getCurrentPageIndex() + 1);
+                if (!pDet.getCurrentPageIndex().equals(pDet.getLastPage())) {
+                    goPage(pDet.getCurrentPageIndex() + 1);
                 }
                 break;
         }
     }
 
     private void goPage(Integer page) {
-        paginationDetails.setCurrentPageIndex(page);
-        List<Phone> phones = paginationDetails.getSearch() != null
-                ? phoneDao.findAllBySearchQuery(paginationDetails.getSearch(), (paginationDetails.getCurrentPageIndex() - 1) * paginationDetails.getMaxProductsOnPage(), paginationDetails.getMaxProductsOnPage())
-                : phoneDao.findAll((paginationDetails.getCurrentPageIndex() - 1) * paginationDetails.getMaxProductsOnPage(), paginationDetails.getMaxProductsOnPage());
-        paginationDetails.setPagePhones(phones);
+        pDet.setCurrentPageIndex(page);
+        int offset = (pDet.getCurrentPageIndex() - 1) * pDet.getMaxProductsOnPage();
+        List<Phone> phones = pDet.getSearch() != null
+                ? phoneDao.findAllBySearchQuery(pDet.getSearch(), offset, pDet.getMaxProductsOnPage())
+                : phoneDao.findAll(offset, pDet.getMaxProductsOnPage());
+        pDet.setPagePhones(phones);
     }
 }

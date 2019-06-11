@@ -20,6 +20,7 @@ public class PaginationDetails {
     @Value("${pagination.maxVisiblePages}")
     private Integer maxVisiblePages;
     private List<Phone> pagePhones;
+    private Long totalNumberOfPhonesFound;
     private List<Integer> pageIndices;
     private Integer leftPageBound;
     private Integer lastPage;

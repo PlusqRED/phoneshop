@@ -8,6 +8,7 @@ function addToClick(productId) {
         data: JSON.stringify({productId: productId, quantity: $('#' + productId).val()}),
         dataType: "json",
         success: function (result) {
+            console.log(result);
             if (result['errorMessage'] === null) {
                 updateMinicart(result);
                 $('#error' + productId).css("display", "none");

@@ -13,7 +13,7 @@
         <jsp:include page="../fragments/minicart.jsp"/>
         <p>
             Found
-                <c:out value="${phones.size()}"/> phones.
+                <c:out value="${requestScope['totalNumberOfPhones']}"/> phones.
         <div align="right" class="search-container">
             <form action="${pageContext.servletContext.contextPath}/productList?page=1&max=10">
                 <input type="text" placeholder="Search.." name="search" id="search" value="${param.search}">
