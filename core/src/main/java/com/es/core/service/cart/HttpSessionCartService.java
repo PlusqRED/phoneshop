@@ -32,6 +32,8 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void remove(Long phoneId) {
-        throw new UnsupportedOperationException("TODO");
+        if (phoneId != null) {
+            cart.remove(phoneId);
+        }
     }
 }

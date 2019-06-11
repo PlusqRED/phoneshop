@@ -65,6 +65,9 @@
                     <tr>
                         <th>Color</th>
                         <td>
+                            <c:if test="${empty phone.colors}">
+                                No colors
+                            </c:if>
                             <c:forEach var="color" items="${phone.colors}">
                                 ${color.code}
                             </c:forEach>

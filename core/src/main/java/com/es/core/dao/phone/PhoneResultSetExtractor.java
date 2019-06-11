@@ -23,6 +23,12 @@ public class PhoneResultSetExtractor implements ResultSetExtractor<List<Phone>> 
             .code(rs.getString("COLOR_CODE"))
             .build();
 
+    private static void addColor(Color color, Phone phone) {
+        if (color.getCode() != null) {
+            phone.getColors().add(color);
+        }
+    }
+
     @Override
     public List<Phone> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Map<Integer, Phone> phones = new HashMap<>();
@@ -40,19 +46,13 @@ public class PhoneResultSetExtractor implements ResultSetExtractor<List<Phone>> 
         return new ArrayList<>(phones.values());
     }
 
-    private void addColor(Color color, Phone phone) {
-        if (color.getCode() != null) {
-            phone.getColors().add(color);
-        }
-    }
-
     public static class PhoneRowMapper implements RowMapper<Phone> {
         @Override
         public Phone mapRow(ResultSet resultSet, int i) throws SQLException {
             Phone phone = phoneBeanPropertyRowMapper.mapRow(resultSet, i);
             do {
                 Color color = colorRowMapper.mapRow(resultSet, i);
-                phone.getColors().add(color);
+                addColor(color, phone);
             } while (resultSet.next());
             return phone;
         }

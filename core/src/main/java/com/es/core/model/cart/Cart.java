@@ -70,4 +70,12 @@ public class Cart {
                 .findAny()
                 .orElse(0L);
     }
+
+    public void remove(Long phoneId) {
+        items.stream()
+                .filter(cartItem -> cartItem.getPhone().getId().equals(phoneId))
+                .findAny()
+                .ifPresent(items::remove);
+        needRecalculate = true;
+    }
 }
