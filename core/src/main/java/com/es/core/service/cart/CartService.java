@@ -1,10 +1,8 @@
-package com.es.core.cart;
+package com.es.core.service.cart;
 
 import java.util.Map;
 
 public interface CartService {
-
-    Cart getCart();
 
     void addPhone(Long phoneId, Long quantity);
 
