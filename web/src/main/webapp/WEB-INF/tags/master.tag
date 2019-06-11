@@ -25,6 +25,5 @@
 <main>
     <jsp:doBody/>
 </main>
-<hr>
 </body>
 </html>

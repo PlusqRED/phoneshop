@@ -1,7 +1,6 @@
 package com.es.core.dao.phone;
 
 import com.es.core.model.phone.Phone;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +15,9 @@ public class JdbcPhoneDao implements PhoneDao {
 
     //language=SQL
     private final static String FIND_BY_ID =
-            "select * from PUBLIC.PHONES " +
-                    "where id = ?";
+            "select PHONES.*, COLORS.ID as COLOR_ID, COLORS.CODE as COLOR_CODE from PUBLIC.PHONES " +
+                    "left join PHONE2COLOR on PHONES.ID = PHONE2COLOR.PHONEID " +
+                    "left join COLORS on PHONE2COLOR.COLORID = COLORS.ID where PHONES.ID = ?";
 
     //language=SQL
     private final static String FIND_PHONES_WITH_STOCK_AND_PRICE =
@@ -60,7 +60,7 @@ public class JdbcPhoneDao implements PhoneDao {
         if (id < 0) {
             throw new IllegalArgumentException("Id cannot be negative!");
         }
-        Phone phone = jdbcTemplate.queryForObject(FIND_BY_ID, new BeanPropertyRowMapper<>(Phone.class), id);
+        Phone phone = jdbcTemplate.queryForObject(FIND_BY_ID, new PhoneResultSetExtractor.PhoneRowMapper(), id);
         return Optional.of(phone);
     }
 
