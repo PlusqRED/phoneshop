@@ -2,6 +2,9 @@ package com.es.phoneshop.web.controller.pages.ajax;
 
 import com.es.core.model.cart.Cart;
 import com.es.core.service.cart.CartService;
+import com.es.phoneshop.web.controller.pages.forms.AjaxRequestForm;
+import com.es.phoneshop.web.controller.pages.forms.AjaxResponseForm;
+import com.es.phoneshop.web.controller.pages.validators.QuantityValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;

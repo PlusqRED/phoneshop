@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <jsp:useBean id="cartItems" class="java.util.ArrayList" scope="request"/>
 <tags:master pageTitle="Cart">
@@ -15,7 +16,8 @@
            style="margin-bottom: 4%">Back to product list</a>
         <c:choose>
             <c:when test="${not empty cartItems}">
-                <form action="${pageContext.request.contextPath}/cart/update" method="post">
+                <form:form action="${pageContext.request.contextPath}/cart/update" method="post"
+                           modelAttribute="cartPageRequestForm">
                     <table class="table table-hover table-bordered" style="margin-top: 1%">
                         <thead>
                         <tr>
@@ -28,7 +30,7 @@
                             <td>Action</td>
                         </tr>
                         </thead>
-                        <c:forEach var="cartItem" items="${cartItems}">
+                        <c:forEach var="cartItem" varStatus="count" items="${cartItems}">
                             <jsp:useBean id="cartItem" class="com.es.core.model.cart.CartItem" scope="request"/>
                             <tr>
                                 <td>${cartItem.phone.brand}</td>
@@ -49,13 +51,21 @@
                                 </td>
                                 <td>${cartItem.phone.displaySizeInches}"</td>
                                 <td>
-                                    <input name="id" type="hidden" value="${cartItem.phone.id}">
-                                    <input class="text-input" id="${cartItem.phone.id}" name="quantity"
-                                           value="${cartItem.quantity}"
-                                           type="text"
-                                           style="text-align: right"/>
+                                    <form:input path="phoneId" name="id" type="hidden" value="${cartItem.phone.id}"/>
+                                    <form:input path="quantity" class="text-input" id="${cartItem.phone.id}"
+                                                name="quantity"
+                                                value="${cartItem.quantity}"
+                                                type="text"
+                                                style="text-align: right"/>
                                     <br>
-                                    <span id="error${cartItem.phone.id}" style="display: none; color: red"></span>
+                                    <jsp:useBean id="errors" class="java.util.ArrayList" scope="request"/>
+                                    <c:if test="${not empty errors}">
+                                        <c:set var="errorMessage" scope="request" value="${errors.get(count.index)}"/>
+                                        <c:if test="${not empty errorMessage}">
+                                            <span id="error${cartItem.phone.id}"
+                                                  style="color: red">${errorMessage}</span>
+                                        </c:if>
+                                    </c:if>
                                 </td>
                                 <td>
                                     <button type="submit"
@@ -77,7 +87,7 @@
                     <button type="submit">
                         Order
                     </button>
-                </form>
+                </form:form>
             </c:when>
             <c:otherwise>
                 <h4 align="center" class="information">

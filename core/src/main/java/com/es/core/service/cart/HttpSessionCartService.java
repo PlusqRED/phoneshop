@@ -6,6 +6,8 @@ import com.es.core.model.cart.CartItem;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -27,7 +29,11 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void update(Map<Long, Long> items) {
-        throw new UnsupportedOperationException("TODO");
+        List<Long> ids = new ArrayList<>(items.keySet());
+        List<Long> quantities = new ArrayList<>(items.values());
+        for (int i = 0; i < ids.size(); ++i) {
+            cart.setQuantitiyByProductId(ids.get(i), quantities.get(i));
+        }
     }
 
     @Override

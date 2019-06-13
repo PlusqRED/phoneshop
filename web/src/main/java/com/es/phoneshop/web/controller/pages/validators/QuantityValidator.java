@@ -1,8 +1,9 @@
-package com.es.phoneshop.web.controller.pages.ajax;
+package com.es.phoneshop.web.controller.pages.validators;
 
 import com.es.core.dao.phone.PhoneDao;
 import com.es.core.model.cart.Cart;
 import com.es.core.model.phone.Phone;
+import com.es.phoneshop.web.controller.pages.forms.AjaxRequestForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;

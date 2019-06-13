@@ -71,6 +71,14 @@ public class Cart {
                 .orElse(0L);
     }
 
+    public void setQuantitiyByProductId(Long productId, Long quantity) {
+        items.stream()
+                .filter(item -> item.getPhone().getId().equals(productId))
+                .findAny()
+                .ifPresent(item -> item.setQuantity(quantity));
+        needRecalculate = true;
+    }
+
     public void remove(Long phoneId) {
         items.stream()
                 .filter(cartItem -> cartItem.getPhone().getId().equals(phoneId))

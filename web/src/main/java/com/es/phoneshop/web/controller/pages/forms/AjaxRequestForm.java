@@ -1,4 +1,4 @@
-package com.es.phoneshop.web.controller.pages.ajax;
+package com.es.phoneshop.web.controller.pages.forms;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
