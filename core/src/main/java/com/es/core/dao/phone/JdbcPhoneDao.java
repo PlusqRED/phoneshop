@@ -60,8 +60,8 @@ public class JdbcPhoneDao implements PhoneDao {
         if (id < 0) {
             throw new IllegalArgumentException("Id cannot be negative!");
         }
-        Phone phone = jdbcTemplate.queryForObject(FIND_BY_ID, new PhoneResultSetExtractor.PhoneRowMapper(), id);
-        return Optional.of(phone);
+        List<Phone> rows = jdbcTemplate.query(FIND_BY_ID, new PhoneResultSetExtractor.PhoneRowMapper(), id);
+        return rows.isEmpty() ? Optional.empty() : Optional.of(rows.get(0));
     }
 
     @Override

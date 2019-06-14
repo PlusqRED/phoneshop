@@ -32,7 +32,7 @@ public class HttpSessionCartService implements CartService {
         List<Long> ids = new ArrayList<>(items.keySet());
         List<Long> quantities = new ArrayList<>(items.values());
         for (int i = 0; i < ids.size(); ++i) {
-            cart.setQuantitiyByProductId(ids.get(i), quantities.get(i));
+            cart.setQuantityByProductId(ids.get(i), quantities.get(i));
         }
     }
 

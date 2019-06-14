@@ -46,7 +46,7 @@ public class QuantityValidator implements Validator {
         if (isProductIdValid(ajaxRequestForm, errors)) {
             isQuantityValid(ajaxRequestForm, errors);
         } else {
-            errors.reject("productIdError.invalidProductId", invalidProductId);
+            errors.reject("productIdError.doesntExist", doesntExist);
         }
     }
 
@@ -73,7 +73,6 @@ public class QuantityValidator implements Validator {
         if (phone.isPresent()) {
             return true;
         } else {
-            errors.reject("productIdError.doesntExist", doesntExist);
             return false;
         }
     }

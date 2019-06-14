@@ -1,4 +1,4 @@
-package com.es.phoneshop.web.controller.pages.forms;
+package com.es.phoneshop.web.controller.pages.service;
 
 import lombok.Data;
 import org.springframework.context.annotation.Scope;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Component
-public class CartPageResponseForm {
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class CartPageResponseService {
     private List<String> errors;
     private boolean viewed = true;
 
