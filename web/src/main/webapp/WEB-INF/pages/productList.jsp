@@ -75,7 +75,7 @@
                                 <span id="error${phone.id}" style="display: none; color: red"></span>
                             </td>
                             <td>
-                                <button class="addToCartBtn" name="addToCartBtn"
+                                <button class="btn btn-primary" name="addToCartBtn"
                                         onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">
                                     Add
                                     to cart

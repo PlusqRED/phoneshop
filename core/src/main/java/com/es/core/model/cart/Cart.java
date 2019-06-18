@@ -86,4 +86,9 @@ public class Cart {
                 .ifPresent(items::remove);
         needRecalculate = true;
     }
+
+    public void clear() {
+        items.clear();
+        overallPrice = BigDecimal.ZERO;
+    }
 }

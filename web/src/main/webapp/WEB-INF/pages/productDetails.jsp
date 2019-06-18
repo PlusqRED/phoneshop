@@ -12,7 +12,8 @@
 
     <div class="container-fluid">
         <jsp:include page="../fragments/minicart.jsp"/>
-        <a href="${pageContext.request.contextPath}/productList?back=true" class="bordered-el">Back to product list</a>
+        <a href="${pageContext.request.contextPath}/productList?back=true" class="btn btn-primary">Back to product
+            list</a>
 
 
         <div class="modal-body">
@@ -25,7 +26,8 @@
                     <h2 style="margin-bottom: 1%"><b>Price:</b> ${phone.price}$</h2>
                     <input class="text-input" id="${phone.id}" name="quantity" value="1"
                            type="text"/>
-                    <button onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">Add to
+                    <button class="btn btn-primary"
+                            onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">Add to
                         cart
                     </button>
                     <br>

@@ -34,13 +34,27 @@ public class AjaxCartController {
     @PostMapping
     public @ResponseBody
     AjaxResponseForm addPhone(@RequestBody @Validated AjaxRequestForm ajaxRequestForm, BindingResult bindingResult) {
-        AjaxResponseForm.AjaxResponseFormBuilder responseBuilder = AjaxResponseForm.builder()
-                .cartQuantity(cart.getProductQuantity())
-                .overallPrice(cart.getOverallPrice().toString());
         if (!bindingResult.hasErrors()) {
             cartService.addPhone(ajaxRequestForm.getProductId(), Long.valueOf(ajaxRequestForm.getQuantity()));
-            return responseBuilder.errorMessage(null).build();
+            return getResponse(
+                    cart.getProductQuantity(),
+                    cart.getOverallPrice().toString(),
+                    null
+            );
         }
-        return responseBuilder.errorMessage(bindingResult.getAllErrors().get(0).getDefaultMessage()).build();
+        return getResponse(
+                cart.getProductQuantity(),
+                cart.getOverallPrice().toString(),
+                bindingResult.getAllErrors().get(0).getDefaultMessage()
+        );
     }
+
+    private AjaxResponseForm getResponse(Integer productQuantity, String overallPrice, String errorMessage) {
+        return AjaxResponseForm.builder()
+                .cartQuantity(productQuantity)
+                .overallPrice(overallPrice)
+                .errorMessage(errorMessage)
+                .build();
+    }
+
 }

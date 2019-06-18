@@ -57,9 +57,7 @@ public class AjaxCartControllerTest {
 
         RequestBuilder requestBuilder = getRequestBuilder(jsonObject);
 
-        ResultActions resultActions = mockMvc.perform(requestBuilder);
-
-        resultActions.andExpect(content()
+        mockMvc.perform(requestBuilder).andExpect(content()
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errorMessage").doesNotExist());
@@ -71,9 +69,7 @@ public class AjaxCartControllerTest {
 
         RequestBuilder requestBuilder = getRequestBuilder(jsonObject);
 
-        ResultActions resultActions = mockMvc.perform(requestBuilder);
-
-        resultActions.andExpect(content()
+        mockMvc.perform(requestBuilder).andExpect(content()
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cartQuantity").value(0))
@@ -93,10 +89,7 @@ public class AjaxCartControllerTest {
         JSONObject jsonObject = getJson(OK_ID, OUT_OF_STOCK);
 
         RequestBuilder requestBuilder = getRequestBuilder(jsonObject);
-
-        ResultActions resultActions = mockMvc.perform(requestBuilder);
-
-        resultActions.andExpect(content()
+        mockMvc.perform(requestBuilder).andExpect(content()
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cartQuantity").value(0))
@@ -109,10 +102,7 @@ public class AjaxCartControllerTest {
         JSONObject jsonObject = getJson(OK_ID, INVALID_QUANTITY);
 
         RequestBuilder requestBuilder = getRequestBuilder(jsonObject);
-
-        ResultActions resultActions = mockMvc.perform(requestBuilder);
-
-        resultActions.andExpect(content()
+        mockMvc.perform(requestBuilder).andExpect(content()
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cartQuantity").value(0))

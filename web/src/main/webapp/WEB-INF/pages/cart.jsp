@@ -12,7 +12,7 @@
     <script src="${addToCartAjaxUrl}"></script>
 
     <div class="container-fluid">
-        <a href="${pageContext.request.contextPath}/productList?back=true" class="bordered-el"
+        <a href="${pageContext.request.contextPath}/productList?back=true" class="btn btn-primary"
            style="margin-bottom: 4%">Back to product list</a>
         <c:choose>
             <c:when test="${not empty cartItems}">
@@ -81,12 +81,10 @@
                             <td colspan="3">$${requestScope['overallPrice']}</td>
                         </tr>
                     </table>
-                    <button type="submit">
+                    <button type="submit" class="btn btn-primary">
                         Update
                     </button>
-                    <button type="submit">
-                        Order
-                    </button>
+                    <a href="${pageContext.request.contextPath}/order" class="btn btn-primary">Order</a>
                 </form:form>
             </c:when>
             <c:otherwise>
