@@ -1,19 +1,31 @@
 package com.es.phoneshop.web.controller.pages;
 
+import com.es.core.dao.order.OrderDao;
 import com.es.core.model.order.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/orderOverview")
 public class OrderOverviewPageController {
 
-    @GetMapping
-    public String getOderOverview(Model model, @ModelAttribute("order") Order order) {
-        model.addAttribute("order", order);
-        return "orderOverview";
+    @Resource
+    private OrderDao orderDao;
+
+    @GetMapping("/{id}")
+    public String getOderOverview(Model model, @PathVariable Long id) {
+        Optional<Order> optionalOrder = orderDao.findById(id);
+        if (optionalOrder.isPresent()) {
+            model.addAttribute("order", optionalOrder.get());
+            return "orderOverview";
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
     }
 }

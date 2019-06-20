@@ -21,7 +21,7 @@ public class ProductDetailsPageController {
     private MinicartService minicartService;
 
     @GetMapping("/{id}")
-    public String getPhoneInfo(@PathVariable("id") long id, HttpServletRequest request) {
+    public String getPhoneInfo(@PathVariable("id") Long id, HttpServletRequest request) {
         phoneDao.find(id).ifPresent(phone -> request.setAttribute("phone", phone));
         minicartService.loadMinicart(request);
         return "productDetails";

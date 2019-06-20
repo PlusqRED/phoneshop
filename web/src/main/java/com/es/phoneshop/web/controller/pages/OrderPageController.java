@@ -4,20 +4,26 @@ import com.es.core.model.cart.Cart;
 import com.es.core.model.order.Order;
 import com.es.core.service.order.OrderService;
 import com.es.core.service.order.OutOfStockException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
-import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/order")
+@PropertySource("WEB-INF/properties/messages.properties")
 public class OrderPageController {
+
+    private final static String OUT_OF_STOCK = "outOfStock";
+
+    @Value("${order.emptyOrderList}")
+    private String emptyOrderList;
 
     @Resource
     private OrderService orderService;
@@ -25,20 +31,30 @@ public class OrderPageController {
     @Resource
     private Cart cart;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String getOrder(Model model) throws OutOfStockException {
-        model.addAttribute("cartItems", cart.getItems());
-        model.addAttribute("overallPrice", cart.getOverallPrice());
-        model.addAttribute("deliveryPrice", orderService.getDeliveryPrice());
+    @GetMapping
+    public String getOrder(HttpServletRequest request) {
+        request.setAttribute("cartItems", cart.getItems());
+        request.setAttribute("overallPrice", cart.getOverallPrice());
+        request.setAttribute("deliveryPrice", orderService.getDeliveryPrice());
         return "order";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public RedirectView placeOrder(Model model, @ModelAttribute("order") Order order, RedirectAttributes attributes) throws OutOfStockException {
-        order.setId(UUID.randomUUID().getMostSignificantBits());
+    @PostMapping
+    public String placeOrder(@ModelAttribute("order") Order order) {
         orderService.createOrder(order, cart);
-        orderService.placeOrder(order);
-        attributes.addFlashAttribute("order", order);
-        return new RedirectView("orderOverview");
+        try {
+            String redirectUrl = "redirect:orderOverview/";
+            if (!order.getOrderItems().isEmpty()) {
+                Long placedOrderId = orderService.placeOrder(order);
+                cart.clear();
+                return redirectUrl + placedOrderId;
+            } else {
+                return "redirect:order?err=" + emptyOrderList;
+            }
+        } catch (OutOfStockException ex) {
+            String model = cart.getModelById(ex.getOutOfStockPhoneId());
+            cart.remove(ex.getOutOfStockPhoneId());
+            return "redirect:order?err=" + model + " is out of stock!";
+        }
     }
 }

@@ -70,10 +70,6 @@ public class QuantityValidator implements Validator {
 
     private boolean isProductIdValid(AjaxRequestForm ajaxRequestForm, Errors errors) {
         Optional<Phone> phone = phoneDao.find(ajaxRequestForm.getProductId());
-        if (phone.isPresent()) {
-            return true;
-        } else {
-            return false;
-        }
+        return phone.isPresent();
     }
 }

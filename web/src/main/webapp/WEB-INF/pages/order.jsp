@@ -76,6 +76,11 @@
                 <textarea id="additionalInformation" name="additionalInformation"
                           placeholder="Additional information"></textarea>
             </p>
+            <c:if test="${not empty param['err']}">
+                <p>
+                    <span style="color: red">${param['err']}</span>
+                </p>
+            </c:if>
             <p>
                 <button class="btn btn-primary" type="submit">Order</button>
             </p>

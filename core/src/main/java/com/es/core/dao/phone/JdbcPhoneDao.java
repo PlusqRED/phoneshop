@@ -45,6 +45,10 @@ public class JdbcPhoneDao implements PhoneDao {
     //language=SQL
     private final static String PRODUCTS_AMOUNT = "select count(PHONES.ID) as AMOUNT from PUBLIC.PHONES";
 
+    //language=SQL
+    private final static String DECREASE_PHONE_STOCK_BY_ID =
+            "update STOCKS set STOCK = ((select STOCK from STOCKS where PHONEID = ?) - ?) where PHONEID = ?";
+
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -123,6 +127,11 @@ public class JdbcPhoneDao implements PhoneDao {
                                         "%' ")))
                         .concat(lastPartQuery),
                 new PhoneResultSetExtractor(), offset, limit);
+    }
+
+    @Override
+    public void decreasePhoneStockById(Long phoneId, Long quantity) {
+        jdbcTemplate.update(DECREASE_PHONE_STOCK_BY_ID, phoneId, quantity, phoneId);
     }
 
     private String[] getWords(String searchQuery) {

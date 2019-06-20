@@ -12,7 +12,7 @@ import java.util.Optional;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
-    private List<CartItem> items;
+    private final List<CartItem> items;
 
     private boolean needRecalculate = true;
 
@@ -90,5 +90,13 @@ public class Cart {
     public void clear() {
         items.clear();
         overallPrice = BigDecimal.ZERO;
+    }
+
+    public String getModelById(Long id) {
+        return items.stream()
+                .filter(item -> item.getPhone().getId().equals(id))
+                .findAny()
+                .map(item -> item.getPhone().getModel())
+                .orElse(null);
     }
 }

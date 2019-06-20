@@ -7,6 +7,8 @@
 <tags:master pageTitle="Order page">
     <div class="container-fluid">
         <a href="${pageContext.request.contextPath}/cart" class="btn btn-primary">Back to cart</a>
+        <p>
+        <h3>Order number: ${order.id}</h3>
         <table class="table table-hover table-bordered" style="margin-top: 1%">
             <thead>
             <tr>
