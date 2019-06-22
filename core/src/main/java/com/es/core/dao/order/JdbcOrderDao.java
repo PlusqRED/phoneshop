@@ -3,6 +3,7 @@ package com.es.core.dao.order;
 import com.es.core.dao.phone.PhoneDao;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
@@ -49,10 +50,13 @@ public class JdbcOrderDao implements OrderDao {
 
     @Override
     public Optional<Order> findById(Long id) {
-        List<Order> orders = jdbcTemplate.query(FIND_BY_ID, new OrderRowMapper(), id);
-        Optional<Order> optionalOrder = orders.isEmpty() ? Optional.empty() : Optional.of(orders.get(0));
-        optionalOrder.ifPresent(order -> order.setOrderItems(findOrderItemsByOrderId(id)));
-        return optionalOrder;
+        try {
+            Order order = jdbcTemplate.queryForObject(FIND_BY_ID, new OrderRowMapper(), id);
+            order.setOrderItems(findOrderItemsByOrderId(id));
+            return Optional.of(order);
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.es.core.dao.phone;
 
 import com.es.core.model.phone.Phone;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -64,8 +65,11 @@ public class JdbcPhoneDao implements PhoneDao {
         if (id < 0) {
             throw new IllegalArgumentException("Id cannot be negative!");
         }
-        List<Phone> rows = jdbcTemplate.query(FIND_BY_ID, new PhoneResultSetExtractor.PhoneRowMapper(), id);
-        return rows.isEmpty() ? Optional.empty() : Optional.of(rows.get(0));
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(FIND_BY_ID, new PhoneResultSetExtractor.PhoneRowMapper(), id));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

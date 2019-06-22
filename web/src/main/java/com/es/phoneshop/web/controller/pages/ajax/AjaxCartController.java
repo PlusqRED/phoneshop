@@ -36,24 +36,16 @@ public class AjaxCartController {
     AjaxResponseForm addPhone(@RequestBody @Validated AjaxRequestForm ajaxRequestForm, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             cartService.addPhone(ajaxRequestForm.getProductId(), Long.valueOf(ajaxRequestForm.getQuantity()));
-            return getResponse(
-                    cart.getProductQuantity(),
-                    cart.getOverallPrice().toString(),
-                    null
-            );
+            return AjaxResponseForm.builder()
+                    .cartQuantity(cart.getProductQuantity())
+                    .overallPrice(cart.getOverallPrice().toString())
+                    .errorMessage(null)
+                    .build();
         }
-        return getResponse(
-                cart.getProductQuantity(),
-                cart.getOverallPrice().toString(),
-                bindingResult.getAllErrors().get(0).getDefaultMessage()
-        );
-    }
-
-    private AjaxResponseForm getResponse(Integer productQuantity, String overallPrice, String errorMessage) {
         return AjaxResponseForm.builder()
-                .cartQuantity(productQuantity)
-                .overallPrice(overallPrice)
-                .errorMessage(errorMessage)
+                .cartQuantity(cart.getProductQuantity())
+                .overallPrice(cart.getOverallPrice().toString())
+                .errorMessage(bindingResult.getAllErrors().get(0).getDefaultMessage())
                 .build();
     }
 

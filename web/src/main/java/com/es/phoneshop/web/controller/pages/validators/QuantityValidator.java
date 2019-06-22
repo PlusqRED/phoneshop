@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 @Component
-@PropertySource("WEB-INF/properties/messages.properties")
 public class QuantityValidator implements Validator {
 
     @Resource

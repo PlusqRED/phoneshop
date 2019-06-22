@@ -3,7 +3,6 @@ package com.es.phoneshop.web.controller.pages;
 import com.es.core.model.cart.Cart;
 import com.es.core.service.cart.CartService;
 import com.es.phoneshop.web.controller.pages.forms.CartPageRequestForm;
-import com.es.phoneshop.web.controller.pages.service.CartPageResponseService;
 import com.es.phoneshop.web.controller.pages.validators.CartPageValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +17,23 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/cart")
 public class CartPageController {
 
+    @PostMapping("/update")
+    public String updateCart(
+            @ModelAttribute @Validated CartPageRequestForm cartPageRequestForm,
+            BindingResult result,
+            Model model
+    ) {
+        model.addAttribute("hasErrors", result.hasErrors());
+        if (result.hasErrors()) {
+            model.addAttribute("cartItems", cart.getItems());
+            model.addAttribute("overallPrice", cart.getOverallPrice());
+            return "cart";
+        } else {
+            cartService.update(cartPageRequestForm.getQuantities());
+            return "redirect:/cart";
+        }
+    }
+
     @Resource
     private CartService cartService;
 
@@ -27,8 +43,7 @@ public class CartPageController {
     @Resource
     private CartPageValidator cartPageValidator;
 
-    @Resource
-    private CartPageResponseService cartPageResponseService;
+    private final static String FORM = "cartPageRequestForm";
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
@@ -39,27 +54,8 @@ public class CartPageController {
     public String getCart(Model model) {
         model.addAttribute("cartItems", cart.getItems());
         model.addAttribute("overallPrice", cart.getOverallPrice());
-        model.addAttribute("cartPageRequestForm", new CartPageRequestForm());
-        if (!cartPageResponseService.isViewed()) {
-            model.addAttribute("errors", cartPageResponseService.getErrors());
-            cartPageResponseService.setViewed(true);
-        }
+        model.addAttribute(FORM, new CartPageRequestForm());
         return "cart";
-    }
-
-    @PostMapping("/update")
-    public String updateCart(
-            @ModelAttribute("cartPageRequestForm") @Validated CartPageRequestForm cartPageRequestForm,
-            BindingResult result
-    ) {
-        boolean hasError = result.getAllErrors().stream()
-                .anyMatch(error -> error.getDefaultMessage() != null);
-        if (hasError) {
-            cartPageResponseService.updateErrors(result.getAllErrors());
-        } else {
-            cartService.update(cartPageRequestForm.getPhoneIdsToQuantities());
-        }
-        return "redirect:/cart";
     }
 
     @PostMapping("/delete/{id}")

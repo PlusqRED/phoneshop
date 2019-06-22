@@ -51,20 +51,13 @@
                                 </td>
                                 <td>${cartItem.phone.displaySizeInches}"</td>
                                 <td>
-                                    <form:input path="phoneId" name="id" type="hidden" value="${cartItem.phone.id}"/>
-                                    <form:input path="quantity" class="text-input" id="${cartItem.phone.id}"
-                                                name="quantity"
+                                    <form:input path="quantities['${cartItem.phone.id}']" class="text-input"
                                                 value="${cartItem.quantity}"
                                                 type="text"
                                                 style="text-align: right"/>
                                     <br>
-                                    <jsp:useBean id="errors" class="java.util.ArrayList" scope="request"/>
-                                    <c:if test="${not empty errors}">
-                                        <c:set var="errorMessage" scope="request" value="${errors.get(count.index)}"/>
-                                        <c:if test="${not empty errorMessage}">
-                                            <span id="error${cartItem.phone.id}"
-                                                  style="color: red">${errorMessage}</span>
-                                        </c:if>
+                                    <c:if test="${hasErrors}">
+                                        <form:errors path="quantities['${cartItem.phone.id}']" cssClass="color: red"/>
                                     </c:if>
                                 </td>
                                 <td>

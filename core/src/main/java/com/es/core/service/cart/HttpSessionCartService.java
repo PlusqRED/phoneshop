@@ -28,12 +28,8 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void update(Map<Long, Long> items) {
-        List<Long> ids = new ArrayList<>(items.keySet());
-        List<Long> quantities = new ArrayList<>(items.values());
-        for (int i = 0; i < ids.size(); ++i) {
-            cart.setQuantityByProductId(ids.get(i), quantities.get(i));
-        }
+    public void update(Map<String, String> items) {
+        items.forEach((key, value) -> cart.setQuantityByProductId(Long.valueOf(key), Long.valueOf(value)));
     }
 
     @Override

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/order")
-@PropertySource("WEB-INF/properties/messages.properties")
 public class OrderPageController {
 
     private final static String OUT_OF_STOCK = "outOfStock";
