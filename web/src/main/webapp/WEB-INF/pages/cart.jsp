@@ -57,7 +57,7 @@
                                                 style="text-align: right"/>
                                     <br>
                                     <c:if test="${hasErrors}">
-                                        <form:errors path="quantities['${cartItem.phone.id}']" cssClass="color: red"/>
+                                        <form:errors path="quantities['${cartItem.phone.id}']" cssStyle="color: red"/>
                                     </c:if>
                                 </td>
                                 <td>

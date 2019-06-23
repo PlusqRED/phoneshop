@@ -34,7 +34,7 @@ public class CartPageValidator implements Validator {
             } else {
                 Integer stock = phoneDao.getPhoneStockById(Long.valueOf(productId));
                 if (longQuantity > stock) {
-                    errors.rejectValue(String.format(PATH, productId),"quantityError.outOfStock");
+                    errors.rejectValue(String.format(PATH, productId), "quantityError.outOfStock");
                 }
             }
         } catch (NumberFormatException e) {

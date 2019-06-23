@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "/productList")
 public class ProductListPageController {
+
     @Resource
     private MinicartService minicartService;
 

@@ -2,7 +2,6 @@ package com.es.phoneshop.web.controller.pages.forms;
 
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Data

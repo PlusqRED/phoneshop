@@ -5,7 +5,6 @@ import com.es.core.model.order.Order;
 import com.es.core.service.order.OrderService;
 import com.es.core.service.order.OutOfStockException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;

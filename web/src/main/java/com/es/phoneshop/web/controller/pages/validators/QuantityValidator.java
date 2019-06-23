@@ -2,7 +2,6 @@ package com.es.phoneshop.web.controller.pages.validators;
 
 import com.es.core.dao.phone.PhoneDao;
 import com.es.core.model.cart.Cart;
-import com.es.core.model.phone.Phone;
 import com.es.phoneshop.web.controller.pages.forms.AjaxRequestForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -11,9 +10,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 @Component
+@PropertySource("WEB-INF/properties/messages.properties")
 public class QuantityValidator implements Validator {
 
     @Resource
@@ -42,7 +41,7 @@ public class QuantityValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         AjaxRequestForm ajaxRequestForm = (AjaxRequestForm) o;
-        if (isProductIdValid(ajaxRequestForm, errors)) {
+        if (isProductIdValid(ajaxRequestForm)) {
             isQuantityValid(ajaxRequestForm, errors);
         } else {
             errors.reject("productIdError.doesntExist", doesntExist);
@@ -67,8 +66,7 @@ public class QuantityValidator implements Validator {
         return true;
     }
 
-    private boolean isProductIdValid(AjaxRequestForm ajaxRequestForm, Errors errors) {
-        Optional<Phone> phone = phoneDao.find(ajaxRequestForm.getProductId());
-        return phone.isPresent();
+    private boolean isProductIdValid(AjaxRequestForm ajaxRequestForm) {
+        return phoneDao.find(ajaxRequestForm.getProductId()).isPresent();
     }
 }

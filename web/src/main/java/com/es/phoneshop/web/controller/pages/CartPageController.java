@@ -17,33 +17,13 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/cart")
 public class CartPageController {
 
-    @PostMapping("/update")
-    public String updateCart(
-            @ModelAttribute @Validated CartPageRequestForm cartPageRequestForm,
-            BindingResult result,
-            Model model
-    ) {
-        model.addAttribute("hasErrors", result.hasErrors());
-        if (result.hasErrors()) {
-            model.addAttribute("cartItems", cart.getItems());
-            model.addAttribute("overallPrice", cart.getOverallPrice());
-            return "cart";
-        } else {
-            cartService.update(cartPageRequestForm.getQuantities());
-            return "redirect:/cart";
-        }
-    }
-
+    private final static String FORM = "cartPageRequestForm";
     @Resource
     private CartService cartService;
-
     @Resource
     private Cart cart;
-
     @Resource
     private CartPageValidator cartPageValidator;
-
-    private final static String FORM = "cartPageRequestForm";
 
     @InitBinder
     private void initBinder(WebDataBinder webDataBinder) {
@@ -54,8 +34,25 @@ public class CartPageController {
     public String getCart(Model model) {
         model.addAttribute("cartItems", cart.getItems());
         model.addAttribute("overallPrice", cart.getOverallPrice());
-        model.addAttribute(FORM, new CartPageRequestForm());
+        if (!model.containsAttribute(FORM)) {
+            model.addAttribute(FORM, new CartPageRequestForm());
+        }
         return "cart";
+    }
+
+    @PostMapping("/update")
+    public String updateCart(
+            @ModelAttribute @Validated CartPageRequestForm cartPageRequestForm,
+            BindingResult result,
+            Model model
+    ) {
+        model.addAttribute("hasErrors", result.hasErrors());
+        if (result.hasErrors()) {
+            return getCart(model);
+        } else {
+            cartService.update(cartPageRequestForm.getQuantities());
+            return "redirect:/cart";
+        }
     }
 
     @PostMapping("/delete/{id}")
