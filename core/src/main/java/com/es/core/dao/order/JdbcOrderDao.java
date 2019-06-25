@@ -3,6 +3,7 @@ package com.es.core.dao.order;
 import com.es.core.dao.phone.PhoneDao;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
+import com.es.core.model.order.OrderStatus;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -31,6 +32,10 @@ public class JdbcOrderDao implements OrderDao {
                     "left join ORDER_ITEMS on t.ID = ORDER_ITEMS.ORDER_ID " +
                     "join PHONES on PHONES.ID = ORDER_ITEMS.PHONE_ID";
 
+    //language=SQL
+    private final static String UPDATE_STATUS =
+            "update ORDERS set ORDER_STATUS = ? where ID = ?";
+
     @Resource
     private PhoneDao phoneDao;
 
@@ -57,6 +62,11 @@ public class JdbcOrderDao implements OrderDao {
     @Override
     public List<OrderItem> findOrderItemsByOrderId(Long orderId) {
         return jdbcTemplate.query(FIND_ORDER_ITEMS_BY_ORDER_ID, new OrderItemRowMapper(phoneDao), orderId);
+    }
+
+    @Override
+    public void setOrderStatusById(Long id, OrderStatus status) {
+        jdbcTemplate.update(UPDATE_STATUS, status.toString(), id);
     }
 
     private Map<String, Object> getOrderParameters(Order order) {

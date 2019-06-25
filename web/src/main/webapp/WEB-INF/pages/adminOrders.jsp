@@ -8,7 +8,6 @@
 <jsp:useBean id="localDateTimeFormat" class="java.text.SimpleDateFormat" scope="request"/>
 <tags:master pageTitle="Order page">
     <div class="container-fluid">
-        <a href="${pageContext.request.contextPath}/cart" class="btn btn-primary">Back to cart</a>
         <c:choose>
             <c:when test="${not empty orders}">
                 <table class="table table-hover table-bordered" style="margin-top: 1%">
@@ -26,7 +25,7 @@
                     <c:forEach var="order" varStatus="count" items="${orders}">
                         <tr>
                             <td>
-                                <a href="${pageContext.request.contextPath}/adminOrdersOverview/${order.id}">${order.id}</a>
+                                <a href="${pageContext.request.contextPath}/orders/${order.id}">${order.id}</a>
                             </td>
                             <td>${order.firstName} ${order.lastName}</td>
                             <td>${order.contactPhoneNo}</td>

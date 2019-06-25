@@ -57,19 +57,21 @@
         <form action="${pageContext.request.contextPath}/order" method="post">
             <p>
                 <label for="firstName">First name*</label>
-                <input type="text" name="firstName" id="firstName" required>
+                <input type="text" class="form-control" style="width: 300px" name="firstName" id="firstName" required>
             </p>
             <p>
                 <label for="lastName">Last name*</label>
-                <input type="text" name="lastName" id="lastName" required>
+                <input type="text" class="form-control" style="width: 300px" name="lastName" id="lastName" required>
             </p>
             <p>
                 <label for="deliveryAddress">Address*</label>
-                <input type="text" name="deliveryAddress" id="deliveryAddress" required>
+                <input type="text" class="form-control" style="width: 300px" name="deliveryAddress" id="deliveryAddress"
+                       required>
             </p>
             <p>
                 <label for="contactPhoneNo">Phone*</label>
-                <input type="text" name="contactPhoneNo" id="contactPhoneNo" pattern="[\+]\d{3}[\(]*\d{2}[\)]*\d{7}"
+                <input type="text" class="form-control" style="width: 300px" name="contactPhoneNo" id="contactPhoneNo"
+                       pattern="[\+]\d{3}[\(]*\d{2}[\)]*\d{7}"
                        required>
             </p>
             <p>

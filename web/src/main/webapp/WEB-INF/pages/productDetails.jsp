@@ -24,7 +24,8 @@
                 <p>${phone.description}</p>
                 <div style="display: inline-block" class="bordered-el">
                     <h2 style="margin-bottom: 1%"><b>Price:</b> ${phone.price}$</h2>
-                    <input class="text-input" id="${phone.id}" name="quantity" value="1"
+                    <input class="form-control" style="width: 80%; margin-bottom: 10%" id="${phone.id}" name="quantity"
+                           value="1"
                            type="text"/>
                     <button class="btn btn-primary"
                             onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">Add to

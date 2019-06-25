@@ -4,11 +4,10 @@
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 
 <jsp:useBean id="order" class="com.es.core.model.order.Order" scope="request"/>
-<tags:master pageTitle="Order overview page">
+<tags:master pageTitle="Admin order overview page">
     <div class="container-fluid">
-        <a href="${pageContext.request.contextPath}/cart" class="btn btn-primary">Back to cart</a>
-        <p>
         <h3>Order number: ${order.id}</h3>
+        <h3 style="text-align: right">Order status: ${order.status}</h3>
         <table class="table table-hover table-bordered" style="margin-top: 1%">
             <thead>
             <tr>
@@ -75,9 +74,22 @@
         <p>
             <span>${order.additionalInformation}</span>
         </p>
-        <p>
-            <a href="${pageContext.request.contextPath}/productList?back=true" class="btn btn-primary">Back to
-                shopping</a>
+        <a href="${pageContext.request.contextPath}/admin/orders" class="btn btn-primary">Back</a>
+        <form style="display: inline-block;">
+            <button type="submit" style="display: inline-block;" class="btn btn-primary"
+                    formaction="${pageContext.request.contextPath}/orders/${order.id}?status=delivered"
+                    formmethod="post">
+                Delivered
+            </button>
+
+            <button type="submit" class="btn btn-primary"
+                    formaction="${pageContext.request.contextPath}/orders/${order.id}?status=rejected"
+                    formmethod="post">
+                Rejected
+            </button>
+        </form>
         </p>
+
+
     </div>
 </tags:master>
