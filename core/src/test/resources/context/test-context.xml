@@ -18,5 +18,4 @@
         <jdbc:script location="classpath:db/schema.sql"/>
         <jdbc:script location="classpath:db/demodata-phones.sql"/>
     </jdbc:initialize-database>
-
 </beans>

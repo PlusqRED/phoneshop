@@ -30,7 +30,7 @@ public class JdbcOrderDao implements OrderDao {
     private final static String FIND_ALL =
             "select * from (select * from ORDERS offset ? limit ?) t " +
                     "left join ORDER_ITEMS on t.ID = ORDER_ITEMS.ORDER_ID " +
-                    "join PHONES on PHONES.ID = ORDER_ITEMS.PHONE_ID";
+                    "left join PHONES on PHONES.ID = ORDER_ITEMS.PHONE_ID";
 
     //language=SQL
     private final static String UPDATE_STATUS =

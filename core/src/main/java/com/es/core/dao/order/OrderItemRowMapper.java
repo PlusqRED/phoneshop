@@ -19,7 +19,7 @@ public class OrderItemRowMapper implements RowMapper<OrderItem> {
     public OrderItem mapRow(ResultSet resultSet, int i) throws SQLException {
         return OrderItem.builder()
                 .orderId(resultSet.getLong("ORDER_ID"))
-                .phone(phoneDao.find(resultSet.getLong("PHONE_ID")).get())
+                .phone(phoneDao.find(resultSet.getLong("PHONE_ID")).orElse(null))
                 .id(resultSet.getLong("ID"))
                 .quantity(resultSet.getLong("quantity"))
                 .build();
