@@ -20,7 +20,7 @@ public class OrderOverviewPageController {
 
     @GetMapping("/{id}")
     public String getOderOverview(Model model, @PathVariable Long id) {
-        Optional<Order> optionalOrder = orderDao.findById(id);
+        Optional<Order> optionalOrder = orderDao.find(id);
         if (optionalOrder.isPresent()) {
             model.addAttribute("order", optionalOrder.get());
             return "orderOverview";

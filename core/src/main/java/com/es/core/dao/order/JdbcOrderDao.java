@@ -25,6 +25,12 @@ public class JdbcOrderDao implements OrderDao {
     private final static String FIND_ORDER_ITEMS_BY_ORDER_ID =
             "select * from ORDER_ITEMS where ORDER_ID = ?";
 
+    //language=SQL
+    private final static String FIND_ALL =
+            "select * from (select * from ORDERS offset ? limit ?) t " +
+                    "left join ORDER_ITEMS on t.ID = ORDER_ITEMS.ORDER_ID " +
+                    "join PHONES on PHONES.ID = ORDER_ITEMS.PHONE_ID";
+
     @Resource
     private PhoneDao phoneDao;
 
@@ -49,17 +55,6 @@ public class JdbcOrderDao implements OrderDao {
     }
 
     @Override
-    public Optional<Order> findById(Long id) {
-        try {
-            Order order = jdbcTemplate.queryForObject(FIND_BY_ID, new OrderRowMapper(), id);
-            order.setOrderItems(findOrderItemsByOrderId(id));
-            return Optional.of(order);
-        } catch (DataAccessException e) {
-            return Optional.empty();
-        }
-    }
-
-    @Override
     public List<OrderItem> findOrderItemsByOrderId(Long orderId) {
         return jdbcTemplate.query(FIND_ORDER_ITEMS_BY_ORDER_ID, new OrderItemRowMapper(phoneDao), orderId);
     }
@@ -74,6 +69,7 @@ public class JdbcOrderDao implements OrderDao {
         parameters.put("CONTACT_PHONE_NO", order.getContactPhoneNo());
         parameters.put("ADDITIONAL_INFO", order.getAdditionalInformation());
         parameters.put("ORDER_STATUS", order.getStatus().toString());
+        parameters.put("DATE", order.getDate());
         return parameters;
     }
 
@@ -87,4 +83,34 @@ public class JdbcOrderDao implements OrderDao {
     }
 
 
+    @Override
+    public void save(Order model) {
+
+    }
+
+    @Override
+    public Optional<Order> find(Long id) {
+        try {
+            Order order = jdbcTemplate.queryForObject(FIND_BY_ID, new OrderRowMapper(), id);
+            order.setOrderItems(findOrderItemsByOrderId(id));
+            return Optional.of(order);
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public void update(Order model) {
+
+    }
+
+    @Override
+    public void delete(Order model) {
+
+    }
+
+    @Override
+    public List<Order> findAll(int offset, int limit) {
+        return jdbcTemplate.query(FIND_ALL, new OrderResultSetExtractor(phoneDao), offset, limit);
+    }
 }

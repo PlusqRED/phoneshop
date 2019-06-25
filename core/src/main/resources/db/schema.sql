@@ -14,7 +14,7 @@ create table colors
 
 create table ORDERS
 (
-    ID               BIGINT AUTO_INCREMENT primary key,
+    ID               BIGINT auto_increment primary key,
     SUBTOTAL         DOUBLE      not null,
     DELIVERY_PRICE   DOUBLE      not null,
     FIRST_NAME       VARCHAR(30) not null,
@@ -22,8 +22,11 @@ create table ORDERS
     DELIVERY_ADDRESS VARCHAR(50) not null,
     CONTACT_PHONE_NO VARCHAR(50) not null,
     ADDITIONAL_INFO  VARCHAR(512),
-    ORDER_STATUS     VARCHAR(20) not null
+    ORDER_STATUS     VARCHAR(20) not null,
+    DATE             TIMESTAMP   not null
 );
+
+
 
 create table ORDER_ITEMS
 (

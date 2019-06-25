@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class OrderRowMapper implements RowMapper<Order> {
 
@@ -21,6 +22,8 @@ public class OrderRowMapper implements RowMapper<Order> {
                 .contactPhoneNo(resultSet.getString("CONTACT_PHONE_NO"))
                 .additionalInformation(resultSet.getString("ADDITIONAL_INFO"))
                 .status(OrderStatus.valueOf(resultSet.getString("ORDER_STATUS").toUpperCase()))
+                .orderItems(new ArrayList<>())
+                .date(resultSet.getTimestamp("DATE").toLocalDateTime())
                 .build();
         order.setTotalPrice(order.getSubtotal().add(order.getDeliveryPrice()));
         return order;
