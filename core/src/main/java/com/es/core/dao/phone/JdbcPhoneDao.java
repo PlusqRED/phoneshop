@@ -4,6 +4,7 @@ import com.es.core.model.phone.Phone;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -81,7 +82,6 @@ public class JdbcPhoneDao implements PhoneDao {
     public void delete(Phone model) {
 
     }
-
 
     public List<Phone> findAll(int offset, int limit) {
         return jdbcTemplate.query(FIND_ALL, new PhoneResultSetExtractor(), offset, limit);
