@@ -1,6 +1,6 @@
-function addToClick(productId) {
+function addToClick(productId, url) {
     $.post({
-        url: "ajaxCart",
+        url: url,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

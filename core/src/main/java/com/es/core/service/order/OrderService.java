@@ -3,8 +3,12 @@ package com.es.core.service.order;
 import com.es.core.model.cart.Cart;
 import com.es.core.model.order.Order;
 
-public interface OrderService {
-    Order createOrder(Cart cart);
+import java.math.BigDecimal;
 
-    void placeOrder(Order order) throws OutOfStockException;
+public interface OrderService {
+    Order createOrder(Order order, Cart cart);
+
+    Long placeOrder(Order order) throws OutOfStockException;
+
+    BigDecimal getDeliveryPrice();
 }

@@ -26,6 +26,7 @@ public class PaginationServiceImpl implements PaginationService {
                 && paginationAction == null
                 && (search == null || search.isEmpty())
                 && request.getParameter("sort") == null
+                && request.getParameter("back") == null
         ) {
             pDet.setSearch(null);
         } else if (search != null) {

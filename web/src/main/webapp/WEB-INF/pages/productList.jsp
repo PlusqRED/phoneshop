@@ -2,10 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <tags:master pageTitle="Product List">
-
+    <c:url value="/resources/css/main.css" var="stylePath"/>
+    <link rel="stylesheet" href="${stylePath}">
     <c:url value="/resources/js/addToCartAjax.js" var="addToCartAjaxUrl"/>
     <script src="${addToCartAjaxUrl}"></script>
 
@@ -14,7 +16,8 @@
         <p>
             Found
                 <c:out value="${requestScope['totalNumberOfPhones']}"/> phones.
-        <div align="right" class="search-container">
+        <p>
+        <div style="float: left">
             <form action="${pageContext.servletContext.contextPath}/productList?page=1&max=10">
                 <input type="text" placeholder="Search.." name="search" id="search" value="${param.search}">
                 <button type="submit">Search</button>
@@ -49,7 +52,11 @@
                                 <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
                             </td>
                             <td>${phone.brand}</td>
-                            <td>${phone.model}</td>
+                            <td>
+                                <a href="${pageContext.request.contextPath}/productDetails/${phone.id}">
+                                        ${phone.model}
+                                </a>
+                            </td>
                             <td>$${phone.price}</td>
                             <td>
                                 <c:if test="${empty phone.colors}">
@@ -66,10 +73,12 @@
                                        type="text"
                                        style="text-align: right"/>
                                 <br>
-                                <span id="error${phone.id}" style="display: none; color: red">Quantity error!</span>
+                                <span id="error${phone.id}" style="display: none; color: red"></span>
                             </td>
                             <td>
-                                <button class="addToCartBtn" name="addToCartBtn" onclick="addToClick(${phone.id})">Add
+                                <button class="btn btn-primary" name="addToCartBtn"
+                                        onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">
+                                    Add
                                     to cart
                                 </button>
                             </td>

@@ -1,13 +1,15 @@
 package com.es.core.model.order;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = "orderItems")
 public class Order {
     private Long id;
     private List<OrderItem> orderItems;
@@ -25,6 +27,8 @@ public class Order {
     private String lastName;
     private String deliveryAddress;
     private String contactPhoneNo;
+
+    private String additionalInformation;
 
     private OrderStatus status;
 }

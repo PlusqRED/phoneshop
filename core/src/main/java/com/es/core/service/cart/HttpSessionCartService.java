@@ -26,12 +26,14 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void update(Map<Long, Long> items) {
-        throw new UnsupportedOperationException("TODO");
+    public void update(Map<String, String> items) {
+        items.forEach((key, value) -> cart.setQuantityByProductId(Long.valueOf(key), Long.valueOf(value)));
     }
 
     @Override
     public void remove(Long phoneId) {
-        throw new UnsupportedOperationException("TODO");
+        if (phoneId != null) {
+            cart.remove(phoneId);
+        }
     }
 }

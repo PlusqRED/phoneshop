@@ -2,12 +2,35 @@ drop table if exists phone2color;
 drop table if exists colors;
 drop table if exists stocks;
 drop table if exists phones;
+drop table if exists ORDERS;
+drop table if exists ORDER_ITEMS;
 
 create table colors
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(50),
     UNIQUE (code)
+);
+
+create table ORDERS
+(
+    ID               BIGINT AUTO_INCREMENT primary key,
+    SUBTOTAL         DOUBLE      not null,
+    DELIVERY_PRICE   DOUBLE      not null,
+    FIRST_NAME       VARCHAR(30) not null,
+    LAST_NAME        VARCHAR(30) not null,
+    DELIVERY_ADDRESS VARCHAR(50) not null,
+    CONTACT_PHONE_NO VARCHAR(50) not null,
+    ADDITIONAL_INFO  VARCHAR(512),
+    ORDER_STATUS     VARCHAR(20) not null
+);
+
+create table ORDER_ITEMS
+(
+    ORDER_ID BIGINT  not null,
+    PHONE_ID BIGINT  not null,
+    ID       BIGINT AUTO_INCREMENT primary key,
+    QUANTITY INTEGER not null
 );
 
 create table phones

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
-    private List<CartItem> items;
+    private final List<CartItem> items;
 
     private boolean needRecalculate = true;
 
@@ -69,5 +69,34 @@ public class Cart {
                 .map(CartItem::getQuantity)
                 .findAny()
                 .orElse(0L);
+    }
+
+    public void setQuantityByProductId(Long productId, Long quantity) {
+        items.stream()
+                .filter(item -> item.getPhone().getId().equals(productId))
+                .findAny()
+                .ifPresent(item -> item.setQuantity(quantity));
+        needRecalculate = true;
+    }
+
+    public void remove(Long phoneId) {
+        items.stream()
+                .filter(cartItem -> cartItem.getPhone().getId().equals(phoneId))
+                .findAny()
+                .ifPresent(items::remove);
+        needRecalculate = true;
+    }
+
+    public void clear() {
+        items.clear();
+        overallPrice = BigDecimal.ZERO;
+    }
+
+    public String getModelById(Long id) {
+        return items.stream()
+                .filter(item -> item.getPhone().getId().equals(id))
+                .findAny()
+                .map(item -> item.getPhone().getModel())
+                .orElse(null);
     }
 }

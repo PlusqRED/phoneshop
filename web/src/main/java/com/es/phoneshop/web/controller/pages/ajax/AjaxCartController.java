@@ -2,6 +2,9 @@ package com.es.phoneshop.web.controller.pages.ajax;
 
 import com.es.core.model.cart.Cart;
 import com.es.core.service.cart.CartService;
+import com.es.phoneshop.web.controller.pages.forms.AjaxRequestForm;
+import com.es.phoneshop.web.controller.pages.forms.AjaxResponseForm;
+import com.es.phoneshop.web.controller.pages.validators.QuantityValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -33,16 +36,17 @@ public class AjaxCartController {
     AjaxResponseForm addPhone(@RequestBody @Validated AjaxRequestForm ajaxRequestForm, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             cartService.addPhone(ajaxRequestForm.getProductId(), Long.valueOf(ajaxRequestForm.getQuantity()));
-            return new AjaxResponseForm(
-                    cart.getProductQuantity(),
-                    cart.getOverallPrice().toString(),
-                    null
-            );
+            return AjaxResponseForm.builder()
+                    .cartQuantity(cart.getProductQuantity())
+                    .overallPrice(cart.getOverallPrice().toString())
+                    .errorMessage(null)
+                    .build();
         }
-        return new AjaxResponseForm(
-                cart.getProductQuantity(),
-                cart.getOverallPrice().toString(),
-                bindingResult.getAllErrors().get(0).getDefaultMessage()
-        );
+        return AjaxResponseForm.builder()
+                .cartQuantity(cart.getProductQuantity())
+                .overallPrice(cart.getOverallPrice().toString())
+                .errorMessage(bindingResult.getAllErrors().get(0).getDefaultMessage())
+                .build();
     }
+
 }

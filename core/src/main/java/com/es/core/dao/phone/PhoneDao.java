@@ -13,4 +13,6 @@ public interface PhoneDao extends CrudDao<Phone> {
     Long getProductAmountSearchBased(String search);
 
     List<Phone> findAllBySearchQuery(String searchQuery, int offset, int limit);
+
+    void decreasePhoneStockById(Long phoneId, Long quantity);
 }
