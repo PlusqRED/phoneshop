@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:useBean id="phone" class="com.es.core.model.phone.Phone" scope="request"/>
 <tags:master pageTitle="Product details">
@@ -23,7 +24,9 @@
                      alt="phone_image">
                 <p>${phone.description}</p>
                 <div style="display: inline-block" class="bordered-el">
-                    <h2 style="margin-bottom: 1%"><b>Price:</b> ${phone.price}$</h2>
+                    <h2 style="margin-bottom: 1%"><b>Price:</b>
+                        <fmt:formatNumber value="${phone.price}" type="currency" currencySymbol="$"/>
+                    </h2>
                     <input class="form-control" style="width: 80%; margin-bottom: 10%" id="${phone.id}" name="quantity"
                            value="1"
                            type="text"/>

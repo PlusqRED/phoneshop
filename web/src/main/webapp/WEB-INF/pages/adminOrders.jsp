@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:useBean id="orders" class="java.util.ArrayList" scope="request"/>
 <jsp:useBean id="localDateTimeFormat" class="java.text.SimpleDateFormat" scope="request"/>
@@ -25,13 +25,13 @@
                     <c:forEach var="order" varStatus="count" items="${orders}">
                         <tr>
                             <td>
-                                <a href="${pageContext.request.contextPath}/orders/${order.id}">${order.id}</a>
+                                <a href="${pageContext.request.contextPath}/admin/orders/${order.id}">${order.id}</a>
                             </td>
                             <td>${order.firstName} ${order.lastName}</td>
                             <td>${order.contactPhoneNo}</td>
                             <td>${order.deliveryAddress}</td>
                             <td>${localDateTimeFormat.parse(order.date)}</td>
-                            <td>$${order.totalPrice}</td>
+                            <td><fmt:formatNumber value="${order.totalPrice}" type="currency" currencySymbol="$"/></td>
                             <td>${order.status}</td>
                         </tr>
                     </c:forEach>

@@ -3,14 +3,13 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:master pageTitle="Product List">
     <c:url value="/resources/css/main.css" var="stylePath"/>
     <link rel="stylesheet" href="${stylePath}">
     <c:url value="/resources/js/addToCartAjax.js" var="addToCartAjaxUrl"/>
     <script src="${addToCartAjaxUrl}"></script>
-
     <div class="container-fluid">
         <jsp:include page="../fragments/minicart.jsp"/>
         <p>
@@ -58,7 +57,9 @@
                                         ${phone.model}
                                 </a>
                             </td>
-                            <td>$${phone.price}</td>
+                            <td>
+                                <fmt:formatNumber value="${phone.price}" type="currency" currencySymbol="$"/>
+                            </td>
                             <td>
                                 <c:if test="${empty phone.colors}">
                                     No colors

@@ -26,14 +26,12 @@ public class OrderResultSetExtractor implements ResultSetExtractor<List<Order>> 
         Map<Long, Order> orderMap = new HashMap<>();
         OrderItemRowMapper orderItemResultSetExtractor = new OrderItemRowMapper(phoneDao);
         OrderRowMapper orderRowMapper = new OrderRowMapper();
-        Order mapOrder;
         while (resultSet.next()) {
             Order order = orderRowMapper.mapRow(resultSet, 0);
             OrderItem orderItem = orderItemResultSetExtractor.mapRow(resultSet, 0);
-            order.getOrderItems().add(orderItem);
-            if ((mapOrder = orderMap.putIfAbsent(order.getId(), order)) != null) {
-                mapOrder.getOrderItems().add(orderItem);
-            }
+            orderMap.computeIfAbsent(order.getId(), key -> order)
+                    .getOrderItems()
+                    .add(orderItem);
         }
         return new ArrayList<>(orderMap.values());
     }

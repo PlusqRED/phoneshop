@@ -13,4 +13,6 @@ public interface OrderDao extends CrudDao<Order> {
     List<OrderItem> findOrderItemsByOrderId(Long orderId);
 
     void setOrderStatusById(Long id, OrderStatus status);
+
+    OrderStatus getOrderStatusById(Long id);
 }

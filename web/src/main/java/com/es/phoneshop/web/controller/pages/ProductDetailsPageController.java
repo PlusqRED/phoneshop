@@ -2,6 +2,7 @@ package com.es.phoneshop.web.controller.pages;
 
 import com.es.core.dao.phone.PhoneDao;
 import com.es.core.model.phone.Phone;
+import com.es.phoneshop.web.controller.pages.exceptions.ItemNotFoundException;
 import com.es.phoneshop.web.controller.pages.minicart.MinicartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +24,12 @@ public class ProductDetailsPageController {
     private MinicartService minicartService;
 
     @GetMapping("/{id}")
-    public String getPhoneInfo(@PathVariable("id") Long id, HttpServletRequest request) {
+    public String getPhoneInfo(@PathVariable("id") Long id, HttpServletRequest request) throws ItemNotFoundException {
         Optional<Phone> optionalPhone = phoneDao.find(id);
         if (optionalPhone.isPresent()) {
             request.setAttribute("phone", optionalPhone.get());
         } else {
-            throw new IndexOutOfBoundsException();
+            throw new ItemNotFoundException();
         }
         minicartService.loadMinicart(request);
         return "productDetails";

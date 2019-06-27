@@ -3,6 +3,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:useBean id="cartItems" class="java.util.ArrayList" scope="request"/>
 <tags:master pageTitle="Cart">
@@ -39,7 +40,8 @@
                                             ${cartItem.phone.model}
                                     </a>
                                 </td>
-                                <td>$${cartItem.phone.price}</td>
+                                <td><fmt:formatNumber value="${cartItem.phone.price}" type="currency"
+                                                      currencySymbol="$"/></td>
                                 <td>
                                     <c:if test="${empty cartItem.phone.colors}">
                                         No colors
@@ -71,7 +73,8 @@
                         </c:forEach>
                         <tr>
                             <td colspan="2">Total</td>
-                            <td colspan="3">$${requestScope['overallPrice']}</td>
+                            <td colspan="3"><fmt:formatNumber value="${requestScope['overallPrice']}" type="currency"
+                                                              currencySymbol="$"/></td>
                         </tr>
                     </table>
                     <button type="submit" class="btn btn-primary">

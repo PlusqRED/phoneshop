@@ -36,6 +36,10 @@ public class JdbcOrderDao implements OrderDao {
     private final static String UPDATE_STATUS =
             "update ORDERS set ORDER_STATUS = ? where ID = ?";
 
+    //language=SQL
+    private final static String GET_STATUS =
+            "select ORDER_STATUS from ORDERS where ID = ?";
+
     @Resource
     private PhoneDao phoneDao;
 
@@ -66,7 +70,18 @@ public class JdbcOrderDao implements OrderDao {
 
     @Override
     public void setOrderStatusById(Long id, OrderStatus status) {
-        jdbcTemplate.update(UPDATE_STATUS, status.toString(), id);
+        if (OrderStatus.NEW.equals(getOrderStatusById(id))) {
+            jdbcTemplate.update(UPDATE_STATUS, status.toString(), id);
+        }
+    }
+
+    @Override
+    public OrderStatus getOrderStatusById(Long id) {
+        return OrderStatus.valueOf(jdbcTemplate.queryForObject(
+                GET_STATUS,
+                (resultSet, i) -> resultSet.getString("ORDER_STATUS"),
+                id
+        ).toUpperCase());
     }
 
     private Map<String, Object> getOrderParameters(Order order) {

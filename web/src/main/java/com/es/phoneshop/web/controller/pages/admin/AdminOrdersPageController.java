@@ -12,8 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/admin/orders")
-public class OrdersPageController {
+@RequestMapping("/admin/orders")
+public class AdminOrdersPageController {
 
     private final static String ORDERS = "orders";
     @Resource
