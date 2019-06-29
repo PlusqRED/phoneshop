@@ -9,9 +9,11 @@ import com.es.core.model.order.OrderStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,10 +43,12 @@ public class OrderServiceImpl implements OrderService {
                         .build())
                 .collect(Collectors.toList()));
         order.setStatus(OrderStatus.NEW);
+        order.setDate(LocalDateTime.now());
         return order;
     }
 
     @Override
+    @Transactional
     public Long placeOrder(Order order) throws OutOfStockException {
         Optional<OrderItem> outOfStockOrderItem = order.getOrderItems().stream()
                 .filter(item -> phoneDao.getPhoneStockById(item.getPhone().getId()) < item.getQuantity()).findAny();

@@ -6,6 +6,7 @@ import com.es.core.service.order.OrderService;
 import com.es.core.service.order.OutOfStockException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,7 @@ public class OrderPageController {
     }
 
     @PostMapping
+    @Transactional
     public String placeOrder(@ModelAttribute("order") Order order) {
         orderService.createOrder(order, cart);
         try {

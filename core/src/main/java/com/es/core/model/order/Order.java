@@ -3,6 +3,7 @@ package com.es.core.model.order;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -29,6 +30,8 @@ public class Order {
     private String contactPhoneNo;
 
     private String additionalInformation;
+
+    private LocalDateTime date;
 
     private OrderStatus status;
 }

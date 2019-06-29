@@ -3,14 +3,13 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:master pageTitle="Product List">
     <c:url value="/resources/css/main.css" var="stylePath"/>
     <link rel="stylesheet" href="${stylePath}">
     <c:url value="/resources/js/addToCartAjax.js" var="addToCartAjaxUrl"/>
     <script src="${addToCartAjaxUrl}"></script>
-
     <div class="container-fluid">
         <jsp:include page="../fragments/minicart.jsp"/>
         <p>
@@ -19,8 +18,9 @@
         <p>
         <div style="float: left">
             <form action="${pageContext.servletContext.contextPath}/productList?page=1&max=10">
-                <input type="text" placeholder="Search.." name="search" id="search" value="${param.search}">
-                <button type="submit">Search</button>
+                <input type="text" class="form-control" style="display: inline-block; margin-bottom: 10px"
+                       placeholder="Search.." name="search" id="search" value="${param.search}">
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
         </div>
         <c:choose>
@@ -57,7 +57,9 @@
                                         ${phone.model}
                                 </a>
                             </td>
-                            <td>$${phone.price}</td>
+                            <td>
+                                <fmt:formatNumber value="${phone.price}" type="currency" currencySymbol="$"/>
+                            </td>
                             <td>
                                 <c:if test="${empty phone.colors}">
                                     No colors
@@ -69,11 +71,12 @@
                             </td>
                             <td>${phone.displaySizeInches}"</td>
                             <td>
-                                <input class="text-input" id="${phone.id}" name="quantity" value="1"
+                                <input class="form-control" id="${phone.id}" name="quantity" value="1"
                                        type="text"
-                                       style="text-align: right"/>
+                                       style="text-align: right;"/>
                                 <br>
-                                <span id="error${phone.id}" style="display: none; color: red"></span>
+                                <span id="error${phone.id}" style="display: none; color: red"
+                                      class="alert alert-danger"></span>
                             </td>
                             <td>
                                 <button class="btn btn-primary" name="addToCartBtn"

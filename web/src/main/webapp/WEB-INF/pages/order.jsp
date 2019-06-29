@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="springForm" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:master pageTitle="Order page">
     <div class="container-fluid">
@@ -37,39 +38,46 @@
                     </td>
                     <td>${cartItem.phone.displaySizeInches}"</td>
                     <td>${cartItem.quantity}</td>
-                    <td>$${cartItem.phone.price}</td>
+                    <td><fmt:formatNumber value="${cartItem.phone.price}" type="currency" currencySymbol="$"/></td>
+                    </td>
                 </tr>
             </c:forEach>
             <tr>
                 <td colspan="5">Subtotal</td>
-                <td colspan="6">$${requestScope['overallPrice']}</td>
+                <td colspan="6"><fmt:formatNumber value="${requestScope['overallPrice']}" type="currency"
+                                                  currencySymbol="$"/></td>
             </tr>
             <tr>
                 <td colspan="5">Delivery</td>
-                <td colspan="6">$${requestScope['deliveryPrice']}</td>
+                <td colspan="6"><fmt:formatNumber value="${requestScope['deliveryPrice']}" type="currency"
+                                                  currencySymbol="$"/></td>
             </tr>
             <tr>
                 <td colspan="5">Total</td>
-                <td colspan="6">$${requestScope['overallPrice'] + requestScope['deliveryPrice']}</td>
+                <td colspan="6"><fmt:formatNumber
+                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice']}" type="currency"
+                        currencySymbol="$"/></td>
             </tr>
         </table>
         <br>
         <form action="${pageContext.request.contextPath}/order" method="post">
             <p>
                 <label for="firstName">First name*</label>
-                <input type="text" name="firstName" id="firstName" required>
+                <input type="text" class="form-control" style="width: 300px" name="firstName" id="firstName" required>
             </p>
             <p>
                 <label for="lastName">Last name*</label>
-                <input type="text" name="lastName" id="lastName" required>
+                <input type="text" class="form-control" style="width: 300px" name="lastName" id="lastName" required>
             </p>
             <p>
                 <label for="deliveryAddress">Address*</label>
-                <input type="text" name="deliveryAddress" id="deliveryAddress" required>
+                <input type="text" class="form-control" style="width: 300px" name="deliveryAddress" id="deliveryAddress"
+                       required>
             </p>
             <p>
                 <label for="contactPhoneNo">Phone*</label>
-                <input type="text" name="contactPhoneNo" id="contactPhoneNo" pattern="[\+]\d{3}[\(]*\d{2}[\)]*\d{7}"
+                <input type="text" class="form-control" style="width: 300px" name="contactPhoneNo" id="contactPhoneNo"
+                       pattern="[\+]\d{3}[\(]*\d{2}[\)]*\d{7}"
                        required>
             </p>
             <p>

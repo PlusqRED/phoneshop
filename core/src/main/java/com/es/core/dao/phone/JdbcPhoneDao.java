@@ -82,7 +82,6 @@ public class JdbcPhoneDao implements PhoneDao {
 
     }
 
-
     public List<Phone> findAll(int offset, int limit) {
         return jdbcTemplate.query(FIND_ALL, new PhoneResultSetExtractor(), offset, limit);
     }

@@ -12,11 +12,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:context/test-context.xml")
@@ -36,6 +37,7 @@ public class JdbcOrderDaoTest {
             .contactPhoneNo("test")
             .additionalInformation("test")
             .orderItems(new ArrayList<>())
+            .date(LocalDateTime.now())
             .build();
 
     @Before
@@ -45,14 +47,29 @@ public class JdbcOrderDaoTest {
 
     @Test
     public void findByIdTest() {
-        Optional<Order> optionalOrder = orderDao.findById(order.getId());
+        Optional<Order> optionalOrder = orderDao.find(order.getId());
         assertTrue(optionalOrder.isPresent());
     }
 
     @Test
     public void findItemsByOrderIdTest() {
         List<OrderItem> orderItems = orderDao.findOrderItemsByOrderId(order.getId());
+        System.out.println(orderItems);
         assertTrue(orderItems.isEmpty());
+    }
+
+    @Test
+    public void findAllTest() {
+        orderDao.saveOrder(order);
+        List<Order> orders = orderDao.findAll(0, Integer.MAX_VALUE);
+        assertFalse(orders.isEmpty());
+    }
+
+    @Test
+    public void setOrderStatusTest() {
+        orderDao.saveOrder(order);
+        orderDao.setOrderStatusById(1L, OrderStatus.REJECTED);
+        assertEquals(orderDao.find(1L).get().getStatus(), OrderStatus.REJECTED);
     }
 
 }
