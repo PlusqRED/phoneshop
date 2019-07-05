@@ -9,12 +9,13 @@ drop table if exists USERS;
 create table USERS
 (
     id       bigint AUTO_INCREMENT PRIMARY KEY,
-    username    varchar(255) not null,
+    username varchar(255) not null,
     password varchar(255) not null,
     role     varchar(255) not null
 );
 
-insert into USERS values (default, 'admin', 12345678, 'ROLE_ADMIN');
+insert into USERS
+values (default, 'admin', 12345678, 'ROLE_ADMIN');
 
 create table colors
 (
