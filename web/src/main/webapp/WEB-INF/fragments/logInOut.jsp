@@ -6,7 +6,10 @@
         </form>
 
         <h2>${pageContext.request.userPrincipal.name} <a class="btn btn-primary"
-                                                                 onclick="document.forms['logoutForm'].submit()">Logout</a>
+                                                         onclick="document.forms['logoutForm'].submit()">Logout</a>
+            <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+                <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/orders">Admin orders</a>
+            </c:if>
         </h2>
 
     </c:when>

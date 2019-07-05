@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="${stylePath}">
     <c:url value="/resources/js/addToCartAjax.js" var="addToCartAjaxUrl"/>
     <script src="${addToCartAjaxUrl}"></script>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <div class="container-fluid">
         <jsp:include page="../fragments/minicart.jsp"/>
         <jsp:include page="../fragments/logInOut.jsp"/>

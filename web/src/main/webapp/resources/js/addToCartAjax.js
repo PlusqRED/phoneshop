@@ -8,6 +8,11 @@ function addToClick(productId, url) {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify({productId: productId, quantity: $('#' + productId).val()}),
+        beforeSend: function(xhr) {
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+            xhr.setRequestHeader(header, token);
+        },
         success: function (result) {
             if (result['errorMessage'] === null) {
                 updateMinicart(result);

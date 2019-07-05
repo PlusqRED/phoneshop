@@ -14,6 +14,8 @@ create table USERS
     role     varchar(255) not null
 );
 
+insert into USERS values (default, 'admin', 12345678, 'ROLE_ADMIN');
+
 create table colors
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
