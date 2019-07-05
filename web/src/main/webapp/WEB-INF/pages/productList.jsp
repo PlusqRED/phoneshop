@@ -12,6 +12,7 @@
     <script src="${addToCartAjaxUrl}"></script>
     <div class="container-fluid">
         <jsp:include page="../fragments/minicart.jsp"/>
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <p>
             Found
                 <c:out value="${requestScope['totalNumberOfPhones']}"/> phones.

@@ -8,7 +8,7 @@ import com.es.core.model.order.OrderStatus;
 import java.util.List;
 
 public interface OrderDao extends CrudDao<Order> {
-    long saveOrder(Order order);
+    long save(Order order);
 
     List<OrderItem> findOrderItemsByOrderId(Long orderId);
 

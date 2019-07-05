@@ -42,7 +42,7 @@ public class JdbcOrderDaoTest {
 
     @Before
     public void setup() {
-        orderDao.saveOrder(order);
+        orderDao.save(order);
     }
 
     @Test
@@ -60,14 +60,14 @@ public class JdbcOrderDaoTest {
 
     @Test
     public void findAllTest() {
-        orderDao.saveOrder(order);
+        orderDao.save(order);
         List<Order> orders = orderDao.findAll(0, Integer.MAX_VALUE);
         assertFalse(orders.isEmpty());
     }
 
     @Test
     public void setOrderStatusTest() {
-        orderDao.saveOrder(order);
+        orderDao.save(order);
         orderDao.setOrderStatusById(1L, OrderStatus.REJECTED);
         assertEquals(orderDao.find(1L).get().getStatus(), OrderStatus.REJECTED);
     }

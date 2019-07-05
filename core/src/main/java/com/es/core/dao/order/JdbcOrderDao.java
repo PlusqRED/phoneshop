@@ -47,7 +47,7 @@ public class JdbcOrderDao implements OrderDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public long saveOrder(Order order) {
+    public long save(Order order) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("ORDERS")
                 .usingGeneratedKeyColumns("ID");
@@ -105,12 +105,6 @@ public class JdbcOrderDao implements OrderDao {
         parameters.put("ID", orderItem.getId());
         parameters.put("QUANTITY", orderItem.getQuantity());
         return parameters;
-    }
-
-
-    @Override
-    public void save(Order model) {
-
     }
 
     @Override

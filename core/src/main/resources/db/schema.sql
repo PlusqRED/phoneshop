@@ -4,6 +4,15 @@ drop table if exists stocks;
 drop table if exists phones;
 drop table if exists ORDERS;
 drop table if exists ORDER_ITEMS;
+drop table if exists USERS;
+
+create table USERS
+(
+    id       bigint AUTO_INCREMENT PRIMARY KEY,
+    username    varchar(255) not null,
+    password varchar(255) not null,
+    role     varchar(255) not null
+);
 
 create table colors
 (

@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         if (outOfStockOrderItem.isPresent()) {
             throw new OutOfStockException(outOfStockOrderItem.get().getPhone().getId());
         }
-        return orderDao.saveOrder(order);
+        return orderDao.save(order);
     }
 
     @Override

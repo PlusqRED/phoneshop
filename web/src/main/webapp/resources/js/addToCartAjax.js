@@ -1,12 +1,13 @@
 function addToClick(productId, url) {
     $.post({
         url: url,
+        dataType: 'json',
+        contentType: 'json',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         data: JSON.stringify({productId: productId, quantity: $('#' + productId).val()}),
-        dataType: "json",
         success: function (result) {
             if (result['errorMessage'] === null) {
                 updateMinicart(result);
