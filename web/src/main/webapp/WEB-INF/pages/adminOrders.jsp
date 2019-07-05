@@ -8,6 +8,7 @@
 <jsp:useBean id="localDateTimeFormat" class="java.text.SimpleDateFormat" scope="request"/>
 <tags:master pageTitle="Order page">
     <div class="container-fluid">
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <c:choose>
             <c:when test="${not empty orders}">
                 <table class="table table-hover table-bordered" style="margin-top: 1%">

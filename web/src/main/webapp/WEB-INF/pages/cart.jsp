@@ -13,8 +13,8 @@
     <script src="${addToCartAjaxUrl}"></script>
 
     <div class="container-fluid">
-        <a href="${pageContext.request.contextPath}/productList?back=true" class="btn btn-primary"
-           style="margin-bottom: 4%">Back to product list</a>
+        <jsp:include page="../fragments/logInOut.jsp"/>
+        <a href="${pageContext.request.contextPath}/productList?back=true" class="btn btn-primary">Back to product list</a>
         <c:choose>
             <c:when test="${not empty cartItems}">
                 <form:form action="${pageContext.request.contextPath}/cart/update" method="post"

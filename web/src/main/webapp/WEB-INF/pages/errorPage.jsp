@@ -6,6 +6,7 @@
 
 <tags:master pageTitle="Error">
     <div class="container-fluid">
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <h2 style="text-align: center">Something went wrong! ${errorMsg}</h2>
     </div>
 </tags:master>

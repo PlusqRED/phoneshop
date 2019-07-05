@@ -5,7 +5,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Welcome ${pageContext.request.userPrincipal.name} <a class="btn btn-primary"
+        <h2>${pageContext.request.userPrincipal.name} <a class="btn btn-primary"
                                                                  onclick="document.forms['logoutForm'].submit()">Logout</a>
         </h2>
 

@@ -7,6 +7,7 @@
 <jsp:useBean id="order" class="com.es.core.model.order.Order" scope="request"/>
 <tags:master pageTitle="Admin order overview page">
     <div class="container-fluid">
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <h3>Order number: ${order.id}</h3>
         <h3 style="text-align: right">Order status: ${order.status}</h3>
         <table class="table table-hover table-bordered" style="margin-top: 1%">

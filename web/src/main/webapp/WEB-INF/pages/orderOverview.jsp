@@ -7,6 +7,7 @@
 <jsp:useBean id="order" class="com.es.core.model.order.Order" scope="request"/>
 <tags:master pageTitle="Order overview page">
     <div class="container-fluid">
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <a href="${pageContext.request.contextPath}/cart" class="btn btn-primary">Back to cart</a>
         <p>
         <h3>Order number: ${order.id}</h3>
