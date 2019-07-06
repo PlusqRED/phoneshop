@@ -1,6 +1,5 @@
-package com.es.core.dao.phone;
+package com.es.core.dao.order;
 
-import com.es.core.dao.order.OrderDao;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
 import com.es.core.model.order.OrderStatus;
@@ -26,7 +25,7 @@ public class JdbcOrderDaoTest {
     @Resource
     private OrderDao orderDao;
 
-    private Order order = Order.builder()
+    private final Order order = Order.builder()
             .id(1L)
             .status(OrderStatus.NEW)
             .subtotal(BigDecimal.ONE)

@@ -79,6 +79,7 @@
         </p>
         <a href="${pageContext.request.contextPath}/admin/orders" class="btn btn-primary">Back</a>
         <form style="display: inline-block;">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <button type="submit" style="display: inline-block;" class="btn btn-primary"
                     formaction="${pageContext.request.contextPath}/admin/orders/${order.id}?status=delivered"
                     formmethod="post">

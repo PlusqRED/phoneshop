@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class UserDaoImpl implements UserDao {
+public class JdbcUserDao implements UserDao {
 
     //language=SQL
     private final static String FIND_BY_USERNAME =
