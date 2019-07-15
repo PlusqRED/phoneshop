@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public interface OrderService {
     Order createOrder(Order order, Cart cart);
 
-    Long placeOrder(Order order) throws OutOfStockException;
+    Long placeOrder(Order order, Cart cart) throws OutOfStockException;
 
     BigDecimal getDeliveryPrice();
 }

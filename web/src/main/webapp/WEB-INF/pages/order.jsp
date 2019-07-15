@@ -15,6 +15,8 @@
                 <td>Model</td>
                 <td>Colors</td>
                 <td>Display size</td>
+                <td>Wrapping</td>
+                <td>Wrapping info</td>
                 <td>Quantity</td>
                 <td>Price</td>
             </tr>
@@ -38,6 +40,14 @@
                         </c:forEach>
                     </td>
                     <td>${cartItem.phone.displaySizeInches}"</td>
+                    <td>
+                        <c:if test="${cartItem.wrapping}">Yes</c:if>
+                        <c:if test="${not cartItem.wrapping}">No</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${cartItem.wrappingAdditional != ''}">${cartItem.wrappingAdditional}</c:if>
+                        <c:if test="${cartItem.wrappingAdditional == ''}">No info</c:if>
+                    </td>
                     <td>${cartItem.quantity}</td>
                     <td><fmt:formatNumber value="${cartItem.phone.price}" type="currency" currencySymbol="$"/></td>
                     </td>
@@ -45,8 +55,7 @@
             </c:forEach>
             <tr>
                 <td colspan="5">Subtotal</td>
-                <td colspan="6"><fmt:formatNumber value="${requestScope['overallPrice']}" type="currency"
-                                                  currencySymbol="$"/></td>
+                <td colspan="6"><fmt:formatNumber value="${requestScope['overallPrice']}" type="currency" currencySymbol="$"/></td>
             </tr>
             <tr>
                 <td colspan="5">Delivery</td>
@@ -54,9 +63,14 @@
                                                   currencySymbol="$"/></td>
             </tr>
             <tr>
+                <td colspan="5">Overall wrapping price</td>
+                <td colspan="6"><fmt:formatNumber value="${requestScope['overallWrappingPrice']}" type="currency"
+                                                  currencySymbol="$"/></td>
+            </tr>
+            <tr>
                 <td colspan="5">Total</td>
                 <td colspan="6"><fmt:formatNumber
-                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice']}" type="currency"
+                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice'] + requestScope['overallWrappingPrice']}" type="currency"
                         currencySymbol="$"/></td>
             </tr>
         </table>

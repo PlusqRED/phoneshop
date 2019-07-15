@@ -88,6 +88,7 @@ public class JdbcOrderDao implements OrderDao {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("SUBTOTAL", order.getSubtotal());
         parameters.put("DELIVERY_PRICE", order.getDeliveryPrice());
+        parameters.put("OVERALL_WRAPPING_PRICE", order.getOverallWrappingPrice());
         parameters.put("FIRST_NAME", order.getFirstName());
         parameters.put("LAST_NAME", order.getLastName());
         parameters.put("DELIVERY_ADDRESS", order.getDeliveryAddress());
@@ -104,6 +105,8 @@ public class JdbcOrderDao implements OrderDao {
         parameters.put("PHONE_ID", orderItem.getPhone().getId());
         parameters.put("ID", orderItem.getId());
         parameters.put("QUANTITY", orderItem.getQuantity());
+        parameters.put("WRAPPING", orderItem.getWrapping());
+        parameters.put("WRAPPING_ADDITIONAL", orderItem.getWrappingAdditional());
         return parameters;
     }
 

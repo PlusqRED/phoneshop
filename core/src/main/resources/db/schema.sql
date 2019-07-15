@@ -29,6 +29,7 @@ create table ORDERS
     ID               BIGINT auto_increment primary key,
     SUBTOTAL         DOUBLE      not null,
     DELIVERY_PRICE   DOUBLE      not null,
+    OVERALL_WRAPPING_PRICE DOUBLE not null,
     FIRST_NAME       VARCHAR(30) not null,
     LAST_NAME        VARCHAR(30) not null,
     DELIVERY_ADDRESS VARCHAR(50) not null,
@@ -45,7 +46,9 @@ create table ORDER_ITEMS
     ORDER_ID BIGINT  not null,
     PHONE_ID BIGINT  not null,
     ID       BIGINT AUTO_INCREMENT primary key,
-    QUANTITY INTEGER not null
+    QUANTITY INTEGER not null,
+    WRAPPING BOOLEAN default 'false',
+    WRAPPING_ADDITIONAL varchar(30)
 );
 
 create table phones

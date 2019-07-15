@@ -1,5 +1,7 @@
 package com.es.core.model.cart;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -11,12 +13,18 @@ import java.util.Optional;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@PropertySource("classpath:properties/order.properties")
 public class Cart {
     private final List<CartItem> items;
 
     private boolean needRecalculate = true;
 
     private BigDecimal overallPrice;
+
+    private BigDecimal overallWrappingPrice;
+
+    @Value("${wrapping.price}")
+    private Double wrappingPrice;
 
     public Cart() {
         overallPrice = BigDecimal.ZERO;
@@ -32,11 +40,19 @@ public class Cart {
     }
 
     private void recalculateOverallPrice() {
+        overallWrappingPrice = BigDecimal.ZERO;
+        items.stream().filter(CartItem::getWrapping).forEach(cartItem ->
+                overallWrappingPrice = overallWrappingPrice.add(
+                        BigDecimal.valueOf(wrappingPrice)
+                        .multiply(BigDecimal.valueOf(cartItem.getQuantity()))
+                )
+        );
         overallPrice = items.stream()
                 .map(cartItem ->
                         cartItem.getPhone().getPrice()
                                 .multiply(BigDecimal.valueOf(cartItem.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .add(overallWrappingPrice);
     }
 
     public void addCartItem(CartItem cartItem) {
@@ -46,6 +62,8 @@ public class Cart {
         if (optionalCartItem.isPresent()) {
             CartItem item = optionalCartItem.get();
             item.setQuantity(item.getQuantity() + cartItem.getQuantity());
+            item.setWrapping(cartItem.getWrapping());
+            item.setWrappingAdditional(cartItem.getWrappingAdditional());
         } else {
             items.add(cartItem);
         }
@@ -98,5 +116,9 @@ public class Cart {
                 .findAny()
                 .map(item -> item.getPhone().getModel())
                 .orElse(null);
+    }
+
+    public BigDecimal getOverallWrappingPrice() {
+        return overallWrappingPrice;
     }
 }

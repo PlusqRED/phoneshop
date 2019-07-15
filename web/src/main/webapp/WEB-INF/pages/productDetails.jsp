@@ -32,6 +32,11 @@
                     <input class="form-control" style="width: 80%; margin-bottom: 10%" id="${phone.id}" name="quantity"
                            value="1"
                            type="text"/>
+                    <label for="wrapping">Gift wrapping</label>
+                    <input id="wrapping" name="wrapping" type="checkbox" checked/>
+                    <br>
+                    <textarea id="wrappingAdditional" name="wrappingAdditional" placeholder="Additional wrapping info"></textarea>
+                    <br>
                     <button class="btn btn-primary"
                             onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">Add to
                         cart

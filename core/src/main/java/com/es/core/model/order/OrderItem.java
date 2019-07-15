@@ -15,4 +15,6 @@ public class OrderItem {
     private Phone phone;
     private Long orderId;
     private Long quantity;
+    private Boolean wrapping;
+    private String wrappingAdditional;
 }

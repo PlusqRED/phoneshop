@@ -35,7 +35,7 @@ public class AjaxCartController {
     public @ResponseBody
     AjaxResponseForm addPhone(@RequestBody @Validated AjaxRequestForm ajaxRequestForm, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
-            cartService.addPhone(ajaxRequestForm.getProductId(), Long.valueOf(ajaxRequestForm.getQuantity()));
+            cartService.addPhone(ajaxRequestForm.getProductId(), Long.valueOf(ajaxRequestForm.getQuantity()), ajaxRequestForm.getWrapping(), ajaxRequestForm.getWrappingAdditional());
             return AjaxResponseForm.builder()
                     .cartQuantity(cart.getProductQuantity())
                     .overallPrice(cart.getOverallPrice().toString())

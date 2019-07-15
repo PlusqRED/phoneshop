@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface CartService {
 
-    void addPhone(Long phoneId, Long quantity);
+    void addPhone(Long phoneId, Long quantity, Boolean wrapping, String wrappingAdditional);
 
     /**
      * @param items key: {@link com.es.core.model.phone.Phone#}

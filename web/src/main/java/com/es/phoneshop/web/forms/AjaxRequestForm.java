@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class AjaxRequestForm {
     private Long productId;
     private String quantity;
+    private Boolean wrapping;
+    private String wrappingAdditional;
 }

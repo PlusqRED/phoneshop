@@ -34,6 +34,7 @@ public class OrderPageController {
     public String getOrder(HttpServletRequest request) {
         request.setAttribute("cartItems", cart.getItems());
         request.setAttribute("overallPrice", cart.getOverallPrice());
+        request.setAttribute("overallWrappingPrice", cart.getOverallWrappingPrice());
         request.setAttribute("deliveryPrice", orderService.getDeliveryPrice());
         return "order";
     }
@@ -45,7 +46,7 @@ public class OrderPageController {
         try {
             String redirectUrl = "redirect:orderOverview/";
             if (!order.getOrderItems().isEmpty()) {
-                Long placedOrderId = orderService.placeOrder(order);
+                Long placedOrderId = orderService.placeOrder(order, cart);
                 cart.clear();
                 return redirectUrl + placedOrderId;
             } else {
