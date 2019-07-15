@@ -22,9 +22,6 @@ import static junit.framework.TestCase.*;
 @ContextConfiguration("classpath:context/test-context.xml")
 public class JdbcOrderDaoTest {
 
-    @Resource
-    private OrderDao orderDao;
-
     private final Order order = Order.builder()
             .id(1L)
             .status(OrderStatus.NEW)
@@ -38,6 +35,8 @@ public class JdbcOrderDaoTest {
             .orderItems(new ArrayList<>())
             .date(LocalDateTime.now())
             .build();
+    @Resource
+    private OrderDao orderDao;
 
     @Before
     public void setup() {

@@ -44,7 +44,7 @@ public class Cart {
         items.stream().filter(CartItem::getWrapping).forEach(cartItem ->
                 overallWrappingPrice = overallWrappingPrice.add(
                         BigDecimal.valueOf(wrappingPrice)
-                        .multiply(BigDecimal.valueOf(cartItem.getQuantity()))
+                                .multiply(BigDecimal.valueOf(cartItem.getQuantity()))
                 )
         );
         overallPrice = items.stream()

@@ -1,18 +1,20 @@
 function addToClick(productId, url) {
     let quantity = $('#' + productId).val();
     let data;
-    if(typeof(wrapping) != "undefined") {
+    if (typeof (wrapping) != "undefined") {
         data = JSON.stringify({
             productId: productId,
             quantity: quantity,
             wrapping: wrapping.checked,
-            wrappingAdditional: wrappingAdditional.value})
+            wrappingAdditional: wrappingAdditional.value
+        })
     } else {
         data = JSON.stringify({
             productId: productId,
             quantity: quantity,
             wrapping: false,
-            wrappingAdditional: ''})
+            wrappingAdditional: ''
+        })
     }
     $.post({
         url: url,
@@ -43,4 +45,7 @@ function addToClick(productId, url) {
     function updateMinicart(result) {
         $('#minicart').html('<strong>My cart: </strong>' + result['cartQuantity'] + '<strong> items: </strong>' + result['overallPrice'] + '$');
     }
+}
+function wrappingClick() {
+    $("#wrappingAdditional").prop("disabled", !$("#wrapping").checked);
 }

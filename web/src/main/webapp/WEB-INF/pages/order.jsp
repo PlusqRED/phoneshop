@@ -55,7 +55,8 @@
             </c:forEach>
             <tr>
                 <td colspan="5">Subtotal</td>
-                <td colspan="6"><fmt:formatNumber value="${requestScope['overallPrice']}" type="currency" currencySymbol="$"/></td>
+                <td colspan="6"><fmt:formatNumber value="${requestScope['overallPrice']}" type="currency"
+                                                  currencySymbol="$"/></td>
             </tr>
             <tr>
                 <td colspan="5">Delivery</td>
@@ -70,7 +71,8 @@
             <tr>
                 <td colspan="5">Total</td>
                 <td colspan="6"><fmt:formatNumber
-                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice'] + requestScope['overallWrappingPrice']}" type="currency"
+                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice'] + requestScope['overallWrappingPrice']}"
+                        type="currency"
                         currencySymbol="$"/></td>
             </tr>
         </table>

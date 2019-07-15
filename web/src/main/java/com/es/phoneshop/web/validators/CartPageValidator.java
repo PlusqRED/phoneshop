@@ -2,7 +2,6 @@ package com.es.phoneshop.web.validators;
 
 import com.es.core.dao.phone.PhoneDao;
 import com.es.phoneshop.web.forms.CartPageRequestForm;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
