@@ -6,6 +6,7 @@
 
 <tags:master pageTitle="Order page">
     <div class="container-fluid">
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <a href="${pageContext.request.contextPath}/cart" class="btn btn-primary">Back to cart</a>
         <table class="table table-hover table-bordered" style="margin-top: 1%">
             <thead>
@@ -14,6 +15,8 @@
                 <td>Model</td>
                 <td>Colors</td>
                 <td>Display size</td>
+                <td>Wrapping</td>
+                <td>Wrapping info</td>
                 <td>Quantity</td>
                 <td>Price</td>
             </tr>
@@ -37,6 +40,14 @@
                         </c:forEach>
                     </td>
                     <td>${cartItem.phone.displaySizeInches}"</td>
+                    <td>
+                        <c:if test="${cartItem.wrapping}">Yes</c:if>
+                        <c:if test="${not cartItem.wrapping}">No</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${cartItem.wrappingAdditional != ''}">${cartItem.wrappingAdditional}</c:if>
+                        <c:if test="${cartItem.wrappingAdditional == ''}">No info</c:if>
+                    </td>
                     <td>${cartItem.quantity}</td>
                     <td><fmt:formatNumber value="${cartItem.phone.price}" type="currency" currencySymbol="$"/></td>
                     </td>
@@ -53,9 +64,15 @@
                                                   currencySymbol="$"/></td>
             </tr>
             <tr>
+                <td colspan="5">Overall wrapping price</td>
+                <td colspan="6"><fmt:formatNumber value="${requestScope['overallWrappingPrice']}" type="currency"
+                                                  currencySymbol="$"/></td>
+            </tr>
+            <tr>
                 <td colspan="5">Total</td>
                 <td colspan="6"><fmt:formatNumber
-                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice']}" type="currency"
+                        value="${requestScope['overallPrice'] + requestScope['deliveryPrice'] + requestScope['overallWrappingPrice']}"
+                        type="currency"
                         currencySymbol="$"/></td>
             </tr>
         </table>
@@ -89,6 +106,7 @@
                     <span style="color: red">${param['err']}</span>
                 </p>
             </c:if>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <p>
                 <button class="btn btn-primary" type="submit">Order</button>
             </p>

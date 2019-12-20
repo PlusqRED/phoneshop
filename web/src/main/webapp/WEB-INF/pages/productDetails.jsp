@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="${stylePath}">
     <c:url value="/resources/js/addToCartAjax.js" var="addToCartAjaxUrl"/>
     <script src="${addToCartAjaxUrl}"></script>
-
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <div class="container-fluid">
         <jsp:include page="../fragments/minicart.jsp"/>
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <a href="${pageContext.request.contextPath}/productList?back=true" class="btn btn-primary">Back to product
             list</a>
 
@@ -30,6 +32,12 @@
                     <input class="form-control" style="width: 80%; margin-bottom: 10%" id="${phone.id}" name="quantity"
                            value="1"
                            type="text"/>
+                    <label for="wrapping">Gift wrapping</label>
+                    <input id="wrapping" name="wrapping" type="checkbox" checked onchange="wrappingClick()"/>
+                    <br>
+                    <textarea id="wrappingAdditional" name="wrappingAdditional"
+                              placeholder="Additional wrapping info"></textarea>
+                    <br>
                     <button class="btn btn-primary"
                             onclick="addToClick(${phone.id}, '${pageContext.request.contextPath}/ajaxCart')">Add to
                         cart

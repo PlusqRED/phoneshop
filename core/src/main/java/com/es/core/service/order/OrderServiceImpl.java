@@ -34,12 +34,15 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(Order order, Cart cart) {
         order.setDeliveryPrice(getDeliveryPrice());
         order.setSubtotal(cart.getOverallPrice());
-        order.setTotalPrice(cart.getOverallPrice().add(getDeliveryPrice()));
+        order.setOverallWrappingPrice(cart.getOverallWrappingPrice());
+        order.setTotalPrice(cart.getOverallPrice().add(getDeliveryPrice()).add(cart.getOverallWrappingPrice()));
         order.setOrderItems(cart.getItems().stream()
                 .map(cartItem -> OrderItem.builder()
                         .orderId(order.getId())
                         .phone(cartItem.getPhone())
                         .quantity(cartItem.getQuantity())
+                        .wrapping(cartItem.getWrapping())
+                        .wrappingAdditional(cartItem.getWrappingAdditional())
                         .build())
                 .collect(Collectors.toList()));
         order.setStatus(OrderStatus.NEW);
@@ -49,13 +52,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Long placeOrder(Order order) throws OutOfStockException {
+    public Long placeOrder(Order order, Cart cart) throws OutOfStockException {
         Optional<OrderItem> outOfStockOrderItem = order.getOrderItems().stream()
                 .filter(item -> phoneDao.getPhoneStockById(item.getPhone().getId()) < item.getQuantity()).findAny();
         if (outOfStockOrderItem.isPresent()) {
             throw new OutOfStockException(outOfStockOrderItem.get().getPhone().getId());
         }
-        return orderDao.saveOrder(order);
+        return orderDao.save(order);
     }
 
     @Override

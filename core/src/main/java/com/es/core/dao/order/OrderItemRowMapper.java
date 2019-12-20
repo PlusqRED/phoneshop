@@ -22,6 +22,8 @@ public class OrderItemRowMapper implements RowMapper<OrderItem> {
                 .phone(phoneDao.find(resultSet.getLong("PHONE_ID")).orElse(null))
                 .id(resultSet.getLong("ID"))
                 .quantity(resultSet.getLong("quantity"))
+                .wrapping(resultSet.getBoolean("WRAPPING"))
+                .wrappingAdditional(resultSet.getString("WRAPPING_ADDITIONAL"))
                 .build();
     }
 }

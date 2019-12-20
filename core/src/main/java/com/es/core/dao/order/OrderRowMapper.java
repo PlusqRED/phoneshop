@@ -16,6 +16,7 @@ public class OrderRowMapper implements RowMapper<Order> {
                 .id(resultSet.getLong("ID"))
                 .subtotal(resultSet.getBigDecimal("SUBTOTAL"))
                 .deliveryPrice(resultSet.getBigDecimal("DELIVERY_PRICE"))
+                .overallWrappingPrice(resultSet.getBigDecimal("OVERALL_WRAPPING_PRICE"))
                 .firstName(resultSet.getString("FIRST_NAME"))
                 .lastName(resultSet.getString("LAST_NAME"))
                 .deliveryAddress(resultSet.getString("DELIVERY_ADDRESS"))
@@ -25,7 +26,7 @@ public class OrderRowMapper implements RowMapper<Order> {
                 .orderItems(new ArrayList<>())
                 .date(resultSet.getTimestamp("DATE").toLocalDateTime())
                 .build();
-        order.setTotalPrice(order.getSubtotal().add(order.getDeliveryPrice()));
+        order.setTotalPrice(order.getSubtotal().add(order.getDeliveryPrice().add(order.getOverallWrappingPrice())));
         return order;
     }
 }

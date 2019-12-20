@@ -20,10 +20,15 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     @Transactional
-    public void addPhone(Long phoneId, Long quantity) {
+    public void addPhone(Long phoneId, Long quantity, Boolean wrapping, String wrappingAdditional) {
         if (quantity > 0) {
             phoneDao.find(phoneId)
-                    .ifPresent(phone -> cart.addCartItem(new CartItem(phone, quantity)));
+                    .ifPresent(phone -> cart.addCartItem(CartItem.builder()
+                            .phone(phone)
+                            .quantity(quantity)
+                            .wrapping(wrapping)
+                            .wrappingAdditional(wrappingAdditional)
+                            .build()));
         }
     }
 

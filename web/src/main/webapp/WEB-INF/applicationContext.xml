@@ -9,6 +9,9 @@
 
     <context:property-placeholder location="WEB-INF/properties/messages.properties"/>
 
+    <import resource="securityContext.xml"/>
+
     <import resource="classpath:context/applicationContext-core.xml"/>
+
     <import resource="classpath:context/applicationContext-demoda.xml"/>
 </beans>

@@ -7,6 +7,7 @@
 <jsp:useBean id="order" class="com.es.core.model.order.Order" scope="request"/>
 <tags:master pageTitle="Order overview page">
     <div class="container-fluid">
+        <jsp:include page="../fragments/logInOut.jsp"/>
         <a href="${pageContext.request.contextPath}/cart" class="btn btn-primary">Back to cart</a>
         <p>
         <h3>Order number: ${order.id}</h3>
@@ -17,6 +18,8 @@
                 <td>Model</td>
                 <td>Colors</td>
                 <td>Display size</td>
+                <td>Wrapping</td>
+                <td>Wrapping info</td>
                 <td>Quantity</td>
                 <td>Price</td>
             </tr>
@@ -40,6 +43,14 @@
                         </c:forEach>
                     </td>
                     <td>${cartItem.phone.displaySizeInches}"</td>
+                    <td>
+                        <c:if test="${cartItem.wrapping}">Yes</c:if>
+                        <c:if test="${not cartItem.wrapping}">No</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${cartItem.wrappingAdditional != ''}">${cartItem.wrappingAdditional}</c:if>
+                        <c:if test="${cartItem.wrappingAdditional == ''}">No info</c:if>
+                    </td>
                     <td>${cartItem.quantity}</td>
                     <td><fmt:formatNumber value="${cartItem.phone.price}" type="currency" currencySymbol="$"/></td>
                 </tr>
@@ -53,6 +64,11 @@
                 <td colspan="5">Delivery</td>
                 <td colspan="6">
                     <fmt:formatNumber value="${order.deliveryPrice}" type="currency" currencySymbol="$"/></td>
+            </tr>
+            <tr>
+                <td colspan="5">Overall wrapping price</td>
+                <td colspan="6"><fmt:formatNumber value="${order.overallWrappingPrice}" type="currency"
+                                                  currencySymbol="$"/></td>
             </tr>
             <tr>
                 <td colspan="5">Total</td>

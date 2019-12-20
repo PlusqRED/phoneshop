@@ -53,8 +53,9 @@ public class JdbcPhoneDao implements PhoneDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    public void save(final Phone phone) {
-
+    @Override
+    public long save(Phone model) {
+        return 0;
     }
 
     @Override

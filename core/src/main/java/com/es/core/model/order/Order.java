@@ -19,6 +19,7 @@ public class Order {
      */
     private BigDecimal subtotal;
     private BigDecimal deliveryPrice;
+    private BigDecimal overallWrappingPrice;
     /**
      * <code>subtotal</code> + <code>deliveryPrice</code>
      */
